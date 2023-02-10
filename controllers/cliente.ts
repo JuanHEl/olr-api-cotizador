@@ -53,13 +53,13 @@ export const loginCliente = async( req:Request<{},{},{email:string, password:str
             }
         })
         if(!cliente){
-            res.status(404).json({
+            return res.status(404).json({
                 msg:'No se encuentra registro del cliente'
             })
         }
-        const passwordValid = bcrypt.compare( password, cliente.password )
+        const passwordValid = await bcrypt.compare( password, cliente.password )
         if(!passwordValid){
-            res.status(400).json({
+            return res.status(400).json({
                 msg:'La contraseña es incorrecta'
             })
         }
@@ -75,22 +75,22 @@ export const loginCliente = async( req:Request<{},{},{email:string, password:str
     } catch (error) {
         console.log(error)
         res.status(500).json({
-            error
+            msg:'Ocurrió un error en el servidor'
         })
     }
 }
 
-export const logout = async( req: Request<{},{},{ id:string }>, res: Response ) => {
-    const { id } = req.body
-    try {
-        // pendiente
-        res.status(201).json({
-            msg:'Se ha cerrado la sesión con éxito'
-        })
-    } catch (error) {
-        console.log(error)
-        res.status(500).json({
-            error
-        })
-    }
-}
+// export const logout = async( req: Request<{},{},{ id:string }>, res: Response ) => {
+//     const { id } = req.body
+//     try {
+//         // pendiente
+//         res.status(201).json({
+//             msg:'Se ha cerrado la sesión con éxito'
+//         })
+//     } catch (error) {
+//         console.log(error)
+//         res.status(500).json({
+//             error
+//         })
+//     }
+// }

@@ -14,7 +14,7 @@ const Cliente = db.define('Cliente', {
     email: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique:true
+        unique:'email'
     },
     telefono:{
         type: DataTypes.STRING

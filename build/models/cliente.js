@@ -18,7 +18,7 @@ const Cliente = connection_1.default.define('Cliente', {
     email: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false,
-        unique: true
+        unique: 'email'
     },
     telefono: {
         type: sequelize_1.DataTypes.STRING

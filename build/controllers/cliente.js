@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.logout = exports.loginCliente = exports.registerCliente = exports.getCliente = void 0;
+exports.loginCliente = exports.registerCliente = exports.getCliente = void 0;
 const cliente_1 = __importDefault(require("../models/cliente"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -66,13 +66,13 @@ const loginCliente = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             }
         });
         if (!cliente) {
-            res.status(404).json({
+            return res.status(404).json({
                 msg: 'No se encuentra registro del cliente'
             });
         }
-        const passwordValid = bcrypt_1.default.compare(password, cliente.password);
+        const passwordValid = yield bcrypt_1.default.compare(password, cliente.password);
         if (!passwordValid) {
-            res.status(400).json({
+            return res.status(400).json({
                 msg: 'La contraseña es incorrecta'
             });
         }
@@ -88,24 +88,22 @@ const loginCliente = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     catch (error) {
         console.log(error);
         res.status(500).json({
-            error
+            msg: 'Ocurrió un error en el servidor'
         });
     }
 });
 exports.loginCliente = loginCliente;
-const logout = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.body;
-    try {
-        // pendiente
-        res.status(201).json({
-            msg: 'Se ha cerrado la sesión con éxito'
-        });
-    }
-    catch (error) {
-        console.log(error);
-        res.status(500).json({
-            error
-        });
-    }
-});
-exports.logout = logout;
+// export const logout = async( req: Request<{},{},{ id:string }>, res: Response ) => {
+//     const { id } = req.body
+//     try {
+//         // pendiente
+//         res.status(201).json({
+//             msg:'Se ha cerrado la sesión con éxito'
+//         })
+//     } catch (error) {
+//         console.log(error)
+//         res.status(500).json({
+//             error
+//         })
+//     }
+// }
