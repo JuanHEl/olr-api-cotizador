@@ -1,6 +1,7 @@
 import express, { Application } from 'express'
 import userRouter from '../routes/usuario'
 import clienteRouter from '../routes/cliente'
+import cotizacionRouter from '../routes/cotizacion'
 import cors from 'cors'
 
 import db from '../db/connection'
@@ -11,7 +12,8 @@ class Server {
     private port: string 
     private apiPaths = {
         usuarios: '/api/usuarios',
-        cliente: '/api/cliente'
+        cliente: '/api/cliente',
+        cotizacion: '/api/cotizacion'
     }
 
     constructor(){
@@ -49,6 +51,7 @@ class Server {
     routes(){
         this.app.use( this.apiPaths.usuarios, userRouter )
         this.app.use( this.apiPaths.cliente, clienteRouter )
+        this.app.use( this.apiPaths.cotizacion, cotizacionRouter)
     }
 
     listen(){
