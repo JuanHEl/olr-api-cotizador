@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getCotizacion = void 0;
 const cotizacionServices_1 = require("../services/cotizacionServices");
 const getCotizacion = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { montoArrendamientoFinal, comision, rentaMensual, valorInicialArrendamiento, valorResidualSinIva } = (0, cotizacionServices_1.doCotizacion)(req.body);
+    const { montoArrendamientoFinal, comision, rentaMensual, valorInicialArrendamiento, valorResidualSinIva } = yield (0, cotizacionServices_1.doCotizacion)(req.body);
     if (!rentaMensual)
         return res.status(401).json({ msg: 'No se encuentra la renta' });
     res.status(200).json({ msg: 'En Cotización', data: { montoArrendamientoFinal, comision, rentaMensual, valorInicialArrendamiento, valorResidualSinIva } });

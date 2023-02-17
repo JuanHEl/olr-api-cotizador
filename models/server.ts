@@ -2,6 +2,7 @@ import express, { Application } from 'express'
 import userRouter from '../routes/usuario'
 import clienteRouter from '../routes/cliente'
 import cotizacionRouter from '../routes/cotizacion'
+import valorResidualRouter from '../routes/valor_residual'
 import cors from 'cors'
 
 import db from '../db/connection'
@@ -13,7 +14,8 @@ class Server {
     private apiPaths = {
         usuarios: '/api/usuarios',
         cliente: '/api/cliente',
-        cotizacion: '/api/cotizacion'
+        cotizacion: '/api/cotizacion',
+        valores_residuales:'/api/valores_residuales'
     }
 
     constructor(){
@@ -52,6 +54,7 @@ class Server {
         this.app.use( this.apiPaths.usuarios, userRouter )
         this.app.use( this.apiPaths.cliente, clienteRouter )
         this.app.use( this.apiPaths.cotizacion, cotizacionRouter)
+        this.app.use( this.apiPaths.valores_residuales, valorResidualRouter )
     }
 
     listen(){

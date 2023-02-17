@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const valor_residual_1 = require("../controllers/valor_residual");
+const validarJWT_1 = require("../middlewares/validarJWT");
+const validarSession_1 = require("../middlewares/validarSession");
+const router = (0, express_1.Router)();
+router.use(validarJWT_1.validarJWT);
+router.get('/session', validarSession_1.verificadorSesion);
+router.post('/registerVR', valor_residual_1.registerValoresResiduales);
+exports.default = router;

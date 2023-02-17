@@ -19,6 +19,15 @@ import dotenv from 'dotenv'
 import Server from './models/server'
 import sequelize from "./db/connection";
 
+declare module "express" {
+    export interface Request {
+        authData?:{
+            id?:string,
+            iat?:any
+        }
+    }
+}
+
 //Configurar dot
 dotenv.config()
 sequelize.sync({force:false, alter:true});
