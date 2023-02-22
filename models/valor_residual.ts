@@ -33,10 +33,10 @@ const Valor_Residual = db.define('Valor_Residual', {
     where_deleted:{
         type: DataTypes.DATE
     },
-    who_add: {
+    who_created: {
         type: DataTypes.STRING
     },
-    where_add:{
+    where_created:{
         type: DataTypes.DATE
     },
     who_modified: {

@@ -16,11 +16,12 @@ const Cliente = db.define('Cliente', {
         allowNull: false,
         unique:'email'
     },
-    telefono:{
-        type: DataTypes.STRING
-    },
     password:{
         type: DataTypes.STRING
+    },
+    telefono:{
+        type: DataTypes.STRING,
+        allowNull:false
     },
     tipo_cliente:{
         type: DataTypes.STRING

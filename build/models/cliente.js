@@ -20,11 +20,12 @@ const Cliente = connection_1.default.define('Cliente', {
         allowNull: false,
         unique: 'email'
     },
-    telefono: {
-        type: sequelize_1.DataTypes.STRING
-    },
     password: {
         type: sequelize_1.DataTypes.STRING
+    },
+    telefono: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false
     },
     tipo_cliente: {
         type: sequelize_1.DataTypes.STRING

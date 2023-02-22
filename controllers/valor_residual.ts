@@ -29,21 +29,26 @@ export const registerValoresResiduales = async( req:Request<{},{},IDTOValorResid
                 id: req.authData?.id
             }
         }) 
-        return res.json({user})
-        // const saveValorResidual = await Valor_Residual.create({
-        //     plazo,
-        //     minimo,
-        //     maximo,
-        //     who_add:'',
-        //     deleted: false
-        // })
-        // if(!saveValorResidual){
-        //     return res.status(404).json({
-        //         msg: 'No se pudo crear el valor'
-        //     })
-        // }
+        // return res.json({user})
+        if(!user){
+            return res.status(404).json({
+                msg: 'No se pudo crear el valor, ocurrió un error con la identificación del usuario'
+            })
+        }
+        const saveValorResidual = await Valor_Residual.create({
+            plazo,
+            minimo,
+            maximo,
+            who_created:user.id,
+            deleted: false
+        })
+        if(!saveValorResidual){
+            return res.status(404).json({
+                msg: 'No se pudo crear el valor'
+            })
+        }
         return res.status(201).json({
-            msg: 'Cliente creado con éxito'
+            msg: 'Registro del valor residual exitoso'
         })
     } catch (error) {
         console.log(error)

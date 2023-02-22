@@ -2,7 +2,7 @@ import { DataTypes } from 'sequelize'
 import db from '../db/connection';
 
 const Valor_Otros_Gastos = db.define('Valor_Otros_Gastos', {
-    id:{
+    id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
@@ -11,7 +11,7 @@ const Valor_Otros_Gastos = db.define('Valor_Otros_Gastos', {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    intalacion: {
+    instalacion: {
         type: DataTypes.INTEGER,
         allowNull: false
     },
@@ -19,30 +19,34 @@ const Valor_Otros_Gastos = db.define('Valor_Otros_Gastos', {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    gastos_notariales:{
+    gastos_notariales: {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    delete: {
+    total: {
+        type: DataTypes.INTEGER
+    },
+    deleted: {
         type: DataTypes.BOOLEAN,
-        allowNull: false
+        allowNull: false,
+        defaultValue: false
     },
     who_deleted: {
         type: DataTypes.STRING
     },
-    where_deleted:{
+    when_deleted: {
         type: DataTypes.DATE
     },
-    who_add: {
+    who_created: {
         type: DataTypes.STRING
     },
-    where_add:{
+    when_created: {
         type: DataTypes.DATE
     },
     who_modified: {
         type: DataTypes.STRING
     },
-    where_modified: {
+    when_modified: {
         type: DataTypes.DATE
     }
 })

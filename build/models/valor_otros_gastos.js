@@ -15,7 +15,7 @@ const Valor_Otros_Gastos = connection_1.default.define('Valor_Otros_Gastos', {
         type: sequelize_1.DataTypes.INTEGER,
         allowNull: false
     },
-    intalacion: {
+    instalacion: {
         type: sequelize_1.DataTypes.INTEGER,
         allowNull: false
     },
@@ -27,26 +27,30 @@ const Valor_Otros_Gastos = connection_1.default.define('Valor_Otros_Gastos', {
         type: sequelize_1.DataTypes.INTEGER,
         allowNull: false
     },
-    delete: {
+    total: {
+        type: sequelize_1.DataTypes.INTEGER
+    },
+    deleted: {
         type: sequelize_1.DataTypes.BOOLEAN,
-        allowNull: false
+        allowNull: false,
+        defaultValue: false
     },
     who_deleted: {
         type: sequelize_1.DataTypes.STRING
     },
-    where_deleted: {
+    when_deleted: {
         type: sequelize_1.DataTypes.DATE
     },
-    who_add: {
+    who_created: {
         type: sequelize_1.DataTypes.STRING
     },
-    where_add: {
+    when_created: {
         type: sequelize_1.DataTypes.DATE
     },
     who_modified: {
         type: sequelize_1.DataTypes.STRING
     },
-    where_modified: {
+    when_modified: {
         type: sequelize_1.DataTypes.DATE
     }
 });

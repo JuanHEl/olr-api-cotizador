@@ -20,45 +20,41 @@ const Valor_Tasas = connection_1.default.define('Valor_Tasas', {
         allowNull: false
     },
     tasa_a: {
-        type: sequelize_1.DataTypes.INTEGER,
-        allowNull: false
+        type: sequelize_1.DataTypes.INTEGER
     },
     tasa_b: {
-        type: sequelize_1.DataTypes.INTEGER,
-        allowNull: false
+        type: sequelize_1.DataTypes.INTEGER
     },
     tasa_alfa: {
-        type: sequelize_1.DataTypes.INTEGER,
-        allowNull: false
+        type: sequelize_1.DataTypes.INTEGER
     },
     tasa_beta: {
-        type: sequelize_1.DataTypes.INTEGER,
-        allowNull: false
+        type: sequelize_1.DataTypes.INTEGER
     },
     tasa_gamma: {
-        type: sequelize_1.DataTypes.INTEGER,
-        allowNull: false
+        type: sequelize_1.DataTypes.INTEGER
     },
     delete: {
         type: sequelize_1.DataTypes.BOOLEAN,
-        allowNull: false
+        allowNull: false,
+        defaultValue: false
     },
     who_deleted: {
         type: sequelize_1.DataTypes.STRING
     },
-    where_deleted: {
+    when_deleted: {
         type: sequelize_1.DataTypes.DATE
     },
-    who_add: {
+    who_created: {
         type: sequelize_1.DataTypes.STRING
     },
-    where_add: {
+    when_created: {
         type: sequelize_1.DataTypes.DATE
     },
     who_modified: {
         type: sequelize_1.DataTypes.STRING
     },
-    where_modified: {
+    when_modified: {
         type: sequelize_1.DataTypes.DATE
     }
 });

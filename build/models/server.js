@@ -17,15 +17,21 @@ const usuario_1 = __importDefault(require("../routes/usuario"));
 const cliente_1 = __importDefault(require("../routes/cliente"));
 const cotizacion_1 = __importDefault(require("../routes/cotizacion"));
 const valor_residual_1 = __importDefault(require("../routes/valor_residual"));
+const administrador_1 = __importDefault(require("../routes/administrador"));
+const valor_tasas_1 = __importDefault(require("../routes/valor_tasas"));
+const valor_otros_gastos_1 = __importDefault(require("../routes/valor_otros_gastos"));
 const cors_1 = __importDefault(require("cors"));
 const connection_1 = __importDefault(require("../db/connection"));
 class Server {
     constructor() {
         this.apiPaths = {
             usuarios: '/api/usuarios',
+            administradores: '/api/administrador',
             cliente: '/api/cliente',
             cotizacion: '/api/cotizacion',
-            valores_residuales: '/api/valores_residuales'
+            valores_residuales: '/api/valores_residuales',
+            valores_tasas: '/api/valores_tasas',
+            valores_otros_gastos: '/api/valores_otros_gastos'
         };
         this.app = (0, express_1.default)();
         this.port = process.env.PORT || '8000';
@@ -59,6 +65,9 @@ class Server {
         this.app.use(this.apiPaths.cliente, cliente_1.default);
         this.app.use(this.apiPaths.cotizacion, cotizacion_1.default);
         this.app.use(this.apiPaths.valores_residuales, valor_residual_1.default);
+        this.app.use(this.apiPaths.administradores, administrador_1.default);
+        this.app.use(this.apiPaths.valores_tasas, valor_tasas_1.default);
+        this.app.use(this.apiPaths.valores_otros_gastos, valor_otros_gastos_1.default);
     }
     listen() {
         this.app.listen(this.port, () => {

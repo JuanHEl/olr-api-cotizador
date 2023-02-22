@@ -18,10 +18,25 @@ const Administrador = connection_1.default.define('Administrador', {
     email: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false,
-        unique: true
+        unique: 'email'
     },
     password: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false
+    },
+    tipo_administrador: {
         type: sequelize_1.DataTypes.STRING
     },
+    deleted: {
+        type: sequelize_1.DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+    },
+    who_deleted: {
+        type: sequelize_1.DataTypes.STRING
+    },
+    when_deleted: {
+        type: sequelize_1.DataTypes.DATE
+    }
 });
 exports.default = Administrador;

@@ -16,45 +16,41 @@ const Valor_Tasas = db.define('Valor_Tasas', {
         allowNull: false
     },
     tasa_a: {
-        type: DataTypes.INTEGER,
-        allowNull: false
+        type: DataTypes.INTEGER
     },
     tasa_b: {
-        type: DataTypes.INTEGER,
-        allowNull: false
+        type: DataTypes.INTEGER
     },
     tasa_alfa: {
-        type: DataTypes.INTEGER,
-        allowNull: false
+        type: DataTypes.INTEGER
     },
     tasa_beta: {
-        type: DataTypes.INTEGER,
-        allowNull: false
+        type: DataTypes.INTEGER
     },
     tasa_gamma:{
-        type: DataTypes.INTEGER,
-        allowNull: false
+        type: DataTypes.INTEGER
     },
     delete: {
         type: DataTypes.BOOLEAN,
-        allowNull: false
+        allowNull: false,
+        defaultValue: false
     },
     who_deleted: {
         type: DataTypes.STRING
     },
-    where_deleted:{
+    when_deleted:{
         type: DataTypes.DATE
     },
-    who_add: {
+    who_created: {
         type: DataTypes.STRING
     },
-    where_add:{
+    when_created:{
         type: DataTypes.DATE
     },
     who_modified: {
         type: DataTypes.STRING
     },
-    where_modified: {
+    when_modified: {
         type: DataTypes.DATE
     }
 })

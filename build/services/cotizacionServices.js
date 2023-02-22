@@ -126,16 +126,18 @@ const doCotizacion = (cot) => __awaiter(void 0, void 0, void 0, function* () {
                 beta: 35,
                 gamma: 36
             }];
+        console.log('Aquí están todos los datos:', cot, '******************************************************************************************');
         // No existe un error como tal, es de typescript por el tipado
         // console.log('Accesorio:', accesorio.length)
         const sumaa = accesorio.reduce((sum, acc) => (sum + acc.valorAccesorio), 0);
+        // const sumaa = accesorio.reduce((sum, acc) => (sum + acc.valorAccesorio), 0)
         // console.log('La suma es:', sumaaa)
         // console.log('En Cotiza, el valor factura:', precioActivo)
         let vFSInIVA = precioActivo / 1.16;
         let valorResidualSinIva = 0;
         if (tipoResidual === 'Porcentaje') {
-            let valorResidual = vFSInIVA * (valorResidualConvenido / 100);
-            valorResidualSinIva = valorResidual / 1.16;
+            valorResidualSinIva = vFSInIVA * (valorResidualConvenido / 100);
+            // valorResidualSinIva = valorResidual / 1.16
         }
         else if (tipoResidual === 'Cantidad') {
             valorResidualSinIva = valorResidualConvenido / 1.16;
@@ -187,29 +189,43 @@ const doCotizacion = (cot) => __awaiter(void 0, void 0, void 0, function* () {
         let montoArrendamientoFinalSinIva = montoArrendamientoFinal / 1.16;
         console.log('Arrendamiento Sin iva', montoArrendamientoFinalSinIva);
         resultados.montoArrendamientoFinal = montoArrendamientoFinalSinIva;
-        const PMT = (tipm, nper, pv, fv, type) => {
-            // tipm   - Tasa de interés por mes
-            // nper   - numero de periodos
-            // pv     - valor presente
-            // fv     - valor futuro
-            // type   - Cuando vencen los pagos
-            let pmt, pvif;
-            fv || (fv = 0);
-            type || (type = 0);
-            if (tipm === 0)
-                return -(pv + fv) / nper;
-            pvif = Math.pow(1 + tipm, nper);
-            pmt = -tipm * (pv * pvif + fv) / (pvif - 1);
-            if (type === 1)
-                pmt /= (1 + tipm);
-            return pmt;
+        const calculatePayment = (interestRate, periods, presentValue, futureValue, paymentFrequency) => {
+            let paymentAmount, presentValueInterestFactor;
+            futureValue = futureValue || 0;
+            paymentFrequency = paymentFrequency || 0;
+            if (interestRate === 0)
+                return -(presentValue + futureValue) / periods;
+            presentValueInterestFactor = Math.pow(1 + interestRate, periods);
+            paymentAmount = -interestRate * (presentValue * presentValueInterestFactor + futureValue) / (presentValueInterestFactor - 1);
+            if (paymentFrequency === 1)
+                paymentAmount /= (1 + interestRate);
+            return paymentAmount;
         };
+        // const PMT = (tipm: number, nper: number, pv: number, fv: number, type: number) => {
+        //     // tipm   - Tasa de interés por mes
+        //     // nper   - numero de periodos
+        //     // pv     - valor presente
+        //     // fv     - valor futuro
+        //     // type   - Cuando vencen los pagos
+        //     let pmt, pvif;
+        //     fv || (fv = 0);
+        //     type || (type = 0);
+        //     if (tipm === 0)
+        //         return -(pv + fv) / nper;
+        //     pvif = Math.pow(1 + tipm, nper);
+        //     pmt = - tipm * (pv * pvif + fv) / (pvif - 1);
+        //     if (type === 1)
+        //         pmt /= (1 + tipm);
+        //     return pmt;
+        // }
         // let rate = (4 / 100) / 12; // 4% rate 
         // let nper = 30 * 12; //30 years in months
         // let pv = -400000 * (1 - (3.5 / 100)); //3.5%
         // call the function
         // console.log('Renta mensual',PMT(0.0242, 12,-823141.90, 5000, 0))
-        let rentaMensual = PMT(0.0250, plazo, -montoArrendamientoFinalSinIva.toFixed(2), valorResidualSinIva, 0);
+        const rentaMensual = calculatePayment(0.025, plazo, -montoArrendamientoFinalSinIva, valorResidualSinIva, 0);
+        console.log('Resultado con la otra función: ', rentaMensual);
+        // let rentaMensual = PMT(0.0250, plazo, -montoArrendamientoFinalSinIva.toFixed(2), valorResidualSinIva , 0)
         resultados.rentaMensual = rentaMensual;
         console.log('Renta mensual', rentaMensual);
     }
