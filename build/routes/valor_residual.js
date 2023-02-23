@@ -7,5 +7,7 @@ const validarSession_1 = require("../middlewares/validarSession");
 const router = (0, express_1.Router)();
 router.use(validarJWT_1.validarJWT);
 router.get('/session', validarSession_1.verificadorSesion);
-router.post('/registerVR', valor_residual_1.registerValoresResiduales);
+router.put('/', valor_residual_1.updateValoresResiduales);
+router.post('/', valor_residual_1.registerValoresResiduales);
+router.get('/show_all_valor_residual', valor_residual_1.showValorValoresResiduales);
 exports.default = router;

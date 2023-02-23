@@ -45,13 +45,11 @@ export const getTasasByTipoActivoPaginate = async (req: Request<IDTOGetTasasByTi
             totalResults: count,
         });
     } catch (error) {
-        console.log(error);
         return res.status(500).json({
             msg: 'Error en el servidor'
         });
     }
 }
-
 
 export const registerValoresTasa = async (req: Request<{}, {}, IDTOValorTasas>, res: Response) => {
     const { plazo, tipo_activo, tasa_a, tasa_b, tasa_alfa, tasa_beta, tasa_gamma } = req.body
@@ -61,7 +59,6 @@ export const registerValoresTasa = async (req: Request<{}, {}, IDTOValorTasas>, 
                 id: req.authData?.id
             }
         })
-        // return res.json({user})
         if (!admin) {
             return res.status(404).json({
                 msg: 'No se pudo crear el valor, ocurrió un error con la identificación del usuario'
@@ -87,8 +84,7 @@ export const registerValoresTasa = async (req: Request<{}, {}, IDTOValorTasas>, 
             msg: 'Registro del valor de la tasa exitoso'
         })
     } catch (error) {
-        console.log(error)
-        res.status(500).json({
+        return res.status(500).json({
             error: error
         })
     }
@@ -102,7 +98,6 @@ export const getTasasByTipoActivo = async (req: Request<{}, {}, { tipo_activo: s
                 id: req.authData?.id
             }
         })
-        // return res.json({user})
         if (!admin) {
             return res.status(404).json({
                 msg: 'No se pudo crear el valor, ocurrió un error con la identificación del usuario'
@@ -114,7 +109,7 @@ export const getTasasByTipoActivo = async (req: Request<{}, {}, { tipo_activo: s
                     [Op.like]: `%${tipo_activo}%`,
                 },
             },
-            attributes: ['tasa_a', 'tasa_b', 'tasa_alfa', 'tasa_beta', 'tasa_gamma'], // Solo obtener las columnas que deseas mostrar
+            attributes: ['id','tasa_a', 'tasa_b', 'tasa_alfa', 'tasa_beta', 'tasa_gamma'], // Solo obtener las columnas que deseas mostrar
         });
 
         return res.status(200).json({
@@ -122,13 +117,11 @@ export const getTasasByTipoActivo = async (req: Request<{}, {}, { tipo_activo: s
             data: rows,
         });
     } catch (error) {
-        console.log(error);
         return res.status(500).json({
             msg: 'Error en el servidor'
         });
     }
 }
-
 
 export const updateTasas = async (req: Request<{}, {}, IDTOValorTasasUpdate>, res: Response) => {
     const { tasa_a, tasa_b, tasa_alfa, tasa_beta, tasa_gamma, id } = req.body;
@@ -159,7 +152,6 @@ export const updateTasas = async (req: Request<{}, {}, IDTOValorTasasUpdate>, re
             msg: "La fila se actualizó correctamente",
         });
     } catch (error) {
-        console.error(error);
         return res.status(500).json({
             msg: "Error al actualizar la fila",
         });

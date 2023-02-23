@@ -54,7 +54,6 @@ const getTasasByTipoActivoPaginate = (req, res) => __awaiter(void 0, void 0, voi
         });
     }
     catch (error) {
-        console.log(error);
         return res.status(500).json({
             msg: 'Error en el servidor'
         });
@@ -70,7 +69,6 @@ const registerValoresTasa = (req, res) => __awaiter(void 0, void 0, void 0, func
                 id: (_a = req.authData) === null || _a === void 0 ? void 0 : _a.id
             }
         });
-        // return res.json({user})
         if (!admin) {
             return res.status(404).json({
                 msg: 'No se pudo crear el valor, ocurrió un error con la identificación del usuario'
@@ -97,8 +95,7 @@ const registerValoresTasa = (req, res) => __awaiter(void 0, void 0, void 0, func
         });
     }
     catch (error) {
-        console.log(error);
-        res.status(500).json({
+        return res.status(500).json({
             error: error
         });
     }
@@ -113,7 +110,6 @@ const getTasasByTipoActivo = (req, res) => __awaiter(void 0, void 0, void 0, fun
                 id: (_b = req.authData) === null || _b === void 0 ? void 0 : _b.id
             }
         });
-        // return res.json({user})
         if (!admin) {
             return res.status(404).json({
                 msg: 'No se pudo crear el valor, ocurrió un error con la identificación del usuario'
@@ -125,7 +121,7 @@ const getTasasByTipoActivo = (req, res) => __awaiter(void 0, void 0, void 0, fun
                     [sequelize_1.Op.like]: `%${tipo_activo}%`,
                 },
             },
-            attributes: ['tasa_a', 'tasa_b', 'tasa_alfa', 'tasa_beta', 'tasa_gamma'], // Solo obtener las columnas que deseas mostrar
+            attributes: ['id', 'tasa_a', 'tasa_b', 'tasa_alfa', 'tasa_beta', 'tasa_gamma'], // Solo obtener las columnas que deseas mostrar
         });
         return res.status(200).json({
             tipo_activo,
@@ -133,7 +129,6 @@ const getTasasByTipoActivo = (req, res) => __awaiter(void 0, void 0, void 0, fun
         });
     }
     catch (error) {
-        console.log(error);
         return res.status(500).json({
             msg: 'Error en el servidor'
         });
@@ -167,7 +162,6 @@ const updateTasas = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         });
     }
     catch (error) {
-        console.error(error);
         return res.status(500).json({
             msg: "Error al actualizar la fila",
         });

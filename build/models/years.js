@@ -15,20 +15,26 @@ const Years = connection_1.default.define('Years', {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false
     },
-    delete: {
+    deleted: {
         type: sequelize_1.DataTypes.BOOLEAN,
         allowNull: false
+    },
+    who_created: {
+        type: sequelize_1.DataTypes.STRING
+    },
+    when_created: {
+        type: sequelize_1.DataTypes.DATE
+    },
+    who_modified: {
+        type: sequelize_1.DataTypes.STRING
+    },
+    when_modified: {
+        type: sequelize_1.DataTypes.DATE
     },
     who_deleted: {
         type: sequelize_1.DataTypes.STRING
     },
-    where_deleted: {
-        type: sequelize_1.DataTypes.DATE
-    },
-    who_add: {
-        type: sequelize_1.DataTypes.STRING
-    },
-    where_add: {
+    when_deleted: {
         type: sequelize_1.DataTypes.DATE
     }
 });

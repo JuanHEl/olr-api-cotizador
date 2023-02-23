@@ -8,5 +8,5 @@ router.use(validarJWT_1.validarJWT);
 router.get('/', valor_otros_gastos_1.getValoresOtrosGastos);
 router.post('/', valor_otros_gastos_1.registerValoresOtrosGastos);
 router.put('/', valor_otros_gastos_1.updateOtrosGastos);
-router.get('/showcompleteOtrosGastos', valor_otros_gastos_1.showValorOtrosGastos);
+router.get('/show_all_otros_gastos', valor_otros_gastos_1.showValorOtrosGastos);
 exports.default = router;

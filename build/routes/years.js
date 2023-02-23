@@ -1,12 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const valor_tasas_1 = require("../controllers/valor_tasas");
 const validarJWT_1 = require("../middlewares/validarJWT");
+const years_1 = require("../controllers/years");
 const router = (0, express_1.Router)();
 router.use(validarJWT_1.validarJWT);
-router.post('/', valor_tasas_1.registerValoresTasa);
-router.put('/', valor_tasas_1.updateTasas);
-router.get('/', valor_tasas_1.getTasasByTipoActivo);
-// router.get('/:tipo_activoPages', getTasasByTipoActivoPaginate)
+router.get('/', years_1.getYears);
+router.post('/', years_1.registerYears);
+router.put('/', years_1.updateYears);
+router.get('/show_all_years', years_1.showYears);
+router.put('/delete_year', years_1.deleteYears);
 exports.default = router;

@@ -12,26 +12,27 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.showValorValoresResiduales = exports.updateValoresResiduales = exports.registerValoresResiduales = exports.getValoresResiduales = void 0;
-const valor_residual_1 = __importDefault(require("../models/valor_residual"));
+exports.deleteEstadoActivo = exports.showEstadoActivo = exports.updateEstadoActivo = exports.registerEstadoActivo = exports.getEstadoActivo = void 0;
 const administrador_1 = __importDefault(require("../models/administrador"));
-const getValoresResiduales = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const estado_activo_1 = __importDefault(require("../models/estado_activo"));
+const getEstadoActivo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const valoresResiduales = yield valor_residual_1.default.findAll();
-        return res.json({
-            data: valoresResiduales
+        const estadoActivo = yield estado_activo_1.default.findAll();
+        return res.status(200).json({
+            data: estadoActivo
         });
     }
     catch (error) {
+        console.log(error);
         return res.status(500).json({
             msg: 'Ocurrió un error en el servidor'
         });
     }
 });
-exports.getValoresResiduales = getValoresResiduales;
-const registerValoresResiduales = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getEstadoActivo = getEstadoActivo;
+const registerEstadoActivo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
-    const { plazo, maximo, minimo } = req.body;
+    const { estado_activo } = req.body;
     try {
         const admin = yield administrador_1.default.findOne({
             where: {
@@ -43,21 +44,19 @@ const registerValoresResiduales = (req, res) => __awaiter(void 0, void 0, void 0
                 msg: 'No se pudo crear el valor, ocurrió un error con la identificación del usuario'
             });
         }
-        const saveValorResidual = yield valor_residual_1.default.create({
-            plazo,
-            minimo,
-            maximo,
-            who_created: admin.id,
+        const saveEstadoActivo = yield estado_activo_1.default.create({
+            estado_activo,
+            who_created: admin.email,
             when_created: new Date(),
             deleted: false
         });
-        if (!saveValorResidual) {
+        if (!saveEstadoActivo) {
             return res.status(404).json({
                 msg: 'No se pudo crear el valor'
             });
         }
         return res.status(201).json({
-            msg: 'Registro del valor residual exitoso'
+            msg: 'Registro del estado del activo exitoso'
         });
     }
     catch (error) {
@@ -66,10 +65,10 @@ const registerValoresResiduales = (req, res) => __awaiter(void 0, void 0, void 0
         });
     }
 });
-exports.registerValoresResiduales = registerValoresResiduales;
-const updateValoresResiduales = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.registerEstadoActivo = registerEstadoActivo;
+const updateEstadoActivo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _b;
-    const { id, plazo, minimo, maximo } = req.body;
+    const { id, estado_activo } = req.body;
     try {
         const admin = yield administrador_1.default.findOne({
             where: {
@@ -81,8 +80,8 @@ const updateValoresResiduales = (req, res) => __awaiter(void 0, void 0, void 0, 
                 msg: 'No se pudo crear el valor, ocurrió un error con la identificación del usuario'
             });
         }
-        const updatedRow = yield valor_residual_1.default.update({
-            plazo, minimo, maximo,
+        const updatedRow = yield estado_activo_1.default.update({
+            estado_activo,
             who_modified: admin.email,
             when_modified: new Date(),
         }, { where: { id } });
@@ -101,15 +100,15 @@ const updateValoresResiduales = (req, res) => __awaiter(void 0, void 0, void 0, 
         });
     }
 });
-exports.updateValoresResiduales = updateValoresResiduales;
-const showValorValoresResiduales = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.updateEstadoActivo = updateEstadoActivo;
+const showEstadoActivo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const valoresResiduales = yield valor_residual_1.default.findOne({
+        const estadoActivo = yield estado_activo_1.default.findOne({
             where: { deleted: false },
-            attributes: ['id', 'plazo', 'minimo', 'maximo']
+            attributes: ['id', 'estado_activo']
         });
         return res.json({
-            data: valoresResiduales
+            data: estadoActivo
         });
     }
     catch (error) {
@@ -118,4 +117,44 @@ const showValorValoresResiduales = (req, res) => __awaiter(void 0, void 0, void 
         });
     }
 });
-exports.showValorValoresResiduales = showValorValoresResiduales;
+exports.showEstadoActivo = showEstadoActivo;
+const deleteEstadoActivo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _c;
+    const { id } = req.body;
+    try {
+        const admin = yield administrador_1.default.findOne({
+            where: {
+                id: (_c = req.authData) === null || _c === void 0 ? void 0 : _c.id
+            }
+        });
+        if (!admin) {
+            return res.status(404).json({
+                msg: 'No se pudo crear el valor, ocurrió un error con la identificación del usuario'
+            });
+        }
+        const eliminado = yield estado_activo_1.default.findOne({
+            where: {
+                id
+            }
+        });
+        if (!eliminado) {
+            return res.status(404).json({
+                msg: 'No se pudo eliminar el estado del activo'
+            });
+        }
+        yield eliminado.update({
+            deleted: true,
+            who_deleted: admin.email,
+            when_deleted: new Date()
+        });
+        return res.status(201).json({
+            msg: 'El estado del activo eliminado con éxito'
+        });
+    }
+    catch (error) {
+        return res.status(500).json({
+            msg: "Error al eliminar la fila",
+        });
+    }
+});
+exports.deleteEstadoActivo = deleteEstadoActivo;

@@ -12,14 +12,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.showValorValoresResiduales = exports.updateValoresResiduales = exports.registerValoresResiduales = exports.getValoresResiduales = void 0;
-const valor_residual_1 = __importDefault(require("../models/valor_residual"));
+exports.deleteYears = exports.showYears = exports.updateYears = exports.registerYears = exports.getYears = void 0;
 const administrador_1 = __importDefault(require("../models/administrador"));
-const getValoresResiduales = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const years_1 = __importDefault(require("../models/years"));
+const getYears = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const valoresResiduales = yield valor_residual_1.default.findAll();
-        return res.json({
-            data: valoresResiduales
+        const years = yield years_1.default.findAll();
+        return res.status(200).json({
+            data: years
         });
     }
     catch (error) {
@@ -28,10 +28,10 @@ const getValoresResiduales = (req, res) => __awaiter(void 0, void 0, void 0, fun
         });
     }
 });
-exports.getValoresResiduales = getValoresResiduales;
-const registerValoresResiduales = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getYears = getYears;
+const registerYears = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
-    const { plazo, maximo, minimo } = req.body;
+    const { year } = req.body;
     try {
         const admin = yield administrador_1.default.findOne({
             where: {
@@ -43,21 +43,19 @@ const registerValoresResiduales = (req, res) => __awaiter(void 0, void 0, void 0
                 msg: 'No se pudo crear el valor, ocurrió un error con la identificación del usuario'
             });
         }
-        const saveValorResidual = yield valor_residual_1.default.create({
-            plazo,
-            minimo,
-            maximo,
-            who_created: admin.id,
+        const saveYear = yield years_1.default.create({
+            year,
+            who_created: admin.email,
             when_created: new Date(),
             deleted: false
         });
-        if (!saveValorResidual) {
+        if (!saveYear) {
             return res.status(404).json({
                 msg: 'No se pudo crear el valor'
             });
         }
         return res.status(201).json({
-            msg: 'Registro del valor residual exitoso'
+            msg: 'Registro del año exitoso'
         });
     }
     catch (error) {
@@ -66,10 +64,10 @@ const registerValoresResiduales = (req, res) => __awaiter(void 0, void 0, void 0
         });
     }
 });
-exports.registerValoresResiduales = registerValoresResiduales;
-const updateValoresResiduales = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.registerYears = registerYears;
+const updateYears = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _b;
-    const { id, plazo, minimo, maximo } = req.body;
+    const { id, year } = req.body;
     try {
         const admin = yield administrador_1.default.findOne({
             where: {
@@ -81,8 +79,8 @@ const updateValoresResiduales = (req, res) => __awaiter(void 0, void 0, void 0, 
                 msg: 'No se pudo crear el valor, ocurrió un error con la identificación del usuario'
             });
         }
-        const updatedRow = yield valor_residual_1.default.update({
-            plazo, minimo, maximo,
+        const updatedRow = yield years_1.default.update({
+            year,
             who_modified: admin.email,
             when_modified: new Date(),
         }, { where: { id } });
@@ -101,15 +99,15 @@ const updateValoresResiduales = (req, res) => __awaiter(void 0, void 0, void 0, 
         });
     }
 });
-exports.updateValoresResiduales = updateValoresResiduales;
-const showValorValoresResiduales = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.updateYears = updateYears;
+const showYears = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const valoresResiduales = yield valor_residual_1.default.findOne({
+        const year = yield years_1.default.findOne({
             where: { deleted: false },
-            attributes: ['id', 'plazo', 'minimo', 'maximo']
+            attributes: ['id', 'year']
         });
         return res.json({
-            data: valoresResiduales
+            data: year
         });
     }
     catch (error) {
@@ -118,4 +116,44 @@ const showValorValoresResiduales = (req, res) => __awaiter(void 0, void 0, void 
         });
     }
 });
-exports.showValorValoresResiduales = showValorValoresResiduales;
+exports.showYears = showYears;
+const deleteYears = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _c;
+    const { id } = req.body;
+    try {
+        const admin = yield administrador_1.default.findOne({
+            where: {
+                id: (_c = req.authData) === null || _c === void 0 ? void 0 : _c.id
+            }
+        });
+        if (!admin) {
+            return res.status(404).json({
+                msg: 'No se pudo crear el valor, ocurrió un error con la identificación del usuario'
+            });
+        }
+        const eliminado = yield years_1.default.findOne({
+            where: {
+                id
+            }
+        });
+        if (!eliminado) {
+            return res.status(404).json({
+                msg: 'No se pudo eliminar el año'
+            });
+        }
+        yield eliminado.update({
+            deleted: true,
+            who_deleted: admin.email,
+            when_deleted: new Date()
+        });
+        return res.status(201).json({
+            msg: 'El año se ha eliminado con éxito'
+        });
+    }
+    catch (error) {
+        return res.status(500).json({
+            msg: "Error al actualizar la fila",
+        });
+    }
+});
+exports.deleteYears = deleteYears;

@@ -34,19 +34,19 @@ const Valor_Residual = connection_1.default.define('Valor_Residual', {
     who_deleted: {
         type: sequelize_1.DataTypes.STRING
     },
-    where_deleted: {
+    when_deleted: {
         type: sequelize_1.DataTypes.DATE
     },
     who_created: {
         type: sequelize_1.DataTypes.STRING
     },
-    where_created: {
+    when_created: {
         type: sequelize_1.DataTypes.DATE
     },
     who_modified: {
         type: sequelize_1.DataTypes.STRING
     },
-    where_modified: {
+    when_modified: {
         type: sequelize_1.DataTypes.DATE
     }
 });

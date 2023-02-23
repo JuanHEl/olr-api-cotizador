@@ -1,14 +1,13 @@
 import { Request, Response } from "express"
-import Valor_Residual from "../models/valor_residual"
-import { IDTOValorResidual, IDTOValorResidualUpdate } from '../interfaces/valorResidualInterfaces';
 import Administrador from '../models/administrador';
+import Years from '../models/years';
 
 
-export const getValoresResiduales = async (req: Request, res: Response) => {
+export const getYears = async (req: Request, res: Response) => {
     try {
-        const valoresResiduales = await Valor_Residual.findAll()
-        return res.json({
-            data: valoresResiduales
+        const years = await Years.findAll()
+        return res.status(200).json({
+            data: years
         })
     } catch (error) {
         return res.status(500).json({
@@ -17,8 +16,8 @@ export const getValoresResiduales = async (req: Request, res: Response) => {
     }
 }
 
-export const registerValoresResiduales = async (req: Request<{}, {}, IDTOValorResidual>, res: Response) => {
-    const { plazo, maximo, minimo } = req.body
+export const registerYears = async (req: Request<{}, {}, { year: number }>, res: Response) => {
+    const { year } = req.body
     try {
         const admin = await Administrador.findOne({
             where: {
@@ -30,21 +29,19 @@ export const registerValoresResiduales = async (req: Request<{}, {}, IDTOValorRe
                 msg: 'No se pudo crear el valor, ocurrió un error con la identificación del usuario'
             })
         }
-        const saveValorResidual = await Valor_Residual.create({
-            plazo,
-            minimo,
-            maximo,
-            who_created: admin.id,
+        const saveYear = await Years.create({
+            year,
+            who_created: admin.email,
             when_created: new Date(),
             deleted: false
         })
-        if (!saveValorResidual) {
+        if (!saveYear) {
             return res.status(404).json({
                 msg: 'No se pudo crear el valor'
             })
         }
         return res.status(201).json({
-            msg: 'Registro del valor residual exitoso'
+            msg: 'Registro del año exitoso'
         })
     } catch (error) {
         res.status(500).json({
@@ -53,8 +50,8 @@ export const registerValoresResiduales = async (req: Request<{}, {}, IDTOValorRe
     }
 }
 
-export const updateValoresResiduales = async (req: Request<{}, {}, IDTOValorResidualUpdate>, res: Response) => {
-    const { id, plazo, minimo, maximo } = req.body;
+export const updateYears = async (req: Request<{}, {}, { id: number, year: number }>, res: Response) => {
+    const { id, year } = req.body;
     try {
         const admin = await Administrador.findOne({
             where: {
@@ -66,9 +63,9 @@ export const updateValoresResiduales = async (req: Request<{}, {}, IDTOValorResi
                 msg: 'No se pudo crear el valor, ocurrió un error con la identificación del usuario'
             })
         }
-        const updatedRow = await Valor_Residual.update(
+        const updatedRow = await Years.update(
             {
-                plazo, minimo, maximo,
+                year,
                 who_modified: admin.email,
                 when_modified: new Date(),
             },
@@ -90,14 +87,14 @@ export const updateValoresResiduales = async (req: Request<{}, {}, IDTOValorResi
     }
 }
 
-export const showValorValoresResiduales = async (req: Request, res: Response) => {
+export const showYears = async (req: Request, res: Response) => {
     try {
-        const valoresResiduales = await Valor_Residual.findOne({
+        const year = await Years.findOne({
             where: { deleted: false },
-            attributes: ['id', 'plazo', 'minimo', 'maximo']
+            attributes: ['id', 'year']
         })
         return res.json({
-            data: valoresResiduales
+            data: year
         })
     } catch (error) {
         return res.status(500).json({
@@ -106,3 +103,40 @@ export const showValorValoresResiduales = async (req: Request, res: Response) =>
     }
 }
 
+export const deleteYears = async (req:Request<{},{},{id:number }>,res:Response) => {
+    const { id } = req.body;
+    try {
+        const admin = await Administrador.findOne({
+            where: {
+                id: req.authData?.id
+            }
+        })
+        if (!admin) {
+            return res.status(404).json({
+                msg: 'No se pudo crear el valor, ocurrió un error con la identificación del usuario'
+            })
+        }
+        const eliminado = await Years.findOne({
+            where:{
+                id
+            }
+        })
+        if(!eliminado){
+            return res.status(404).json({
+                msg: 'No se pudo eliminar el año'
+            })
+        }
+        await eliminado.update({
+            deleted:true,
+            who_deleted:admin.email,
+            when_deleted: new Date()
+        })
+        return res.status(201).json({
+            msg:'El año se ha eliminado con éxito'
+        })
+    } catch (error) {
+        return res.status(500).json({
+            msg: "Error al actualizar la fila",
+        });
+    }
+}

@@ -30,7 +30,7 @@ const Valor_Tasas = db.define('Valor_Tasas', {
     tasa_gamma:{
         type: DataTypes.INTEGER
     },
-    delete: {
+    deleted: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: false

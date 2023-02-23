@@ -11,4 +11,5 @@ router.get('/', administrador_1.getAdmin);
 router.put('/', administrador_1.updateAdmin);
 router.put('/password', administrador_1.updateAdminPass);
 router.put('/delete_admin', administrador_1.deleteOtherAdmin);
+router.get('/show_all_admins', administrador_1.showAdmin);
 exports.default = router;

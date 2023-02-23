@@ -7,6 +7,6 @@ router.use(validarJWT)
 router.get('/', getValoresOtrosGastos)
 router.post('/', registerValoresOtrosGastos)
 router.put('/', updateOtrosGastos)
-router.get('/showcompleteOtrosGastos', showValorOtrosGastos)
+router.get('/show_all_otros_gastos', showValorOtrosGastos)
 
 export default router

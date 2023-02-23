@@ -63,7 +63,6 @@ const registerValoresOtrosGastos = (req, res) => __awaiter(void 0, void 0, void 
         });
     }
     catch (error) {
-        console.log(error);
         res.status(500).json({
             error
         });
@@ -113,7 +112,6 @@ const updateOtrosGastos = (req, res) => __awaiter(void 0, void 0, void 0, functi
         });
     }
     catch (error) {
-        console.error(error);
         return res.status(500).json({
             msg: "Error al actualizar la fila",
         });

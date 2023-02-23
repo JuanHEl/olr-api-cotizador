@@ -48,7 +48,6 @@ export const registerValoresOtrosGastos = async (req: Request<{}, {}, IDTOValorO
             msg: 'Registro del valor de otros gastos es exitoso'
         })
     } catch (error) {
-        console.log(error)
         res.status(500).json({
             error
         })
@@ -102,7 +101,6 @@ export const updateOtrosGastos = async (req: Request<{}, {}, IDTOValorOtrosGasto
             msg: "La fila se actualizó correctamente",
         });
     } catch (error) {
-        console.error(error);
         return res.status(500).json({
             msg: "Error al actualizar la fila",
         });

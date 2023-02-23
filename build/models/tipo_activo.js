@@ -15,20 +15,26 @@ const Tipo_Activo = connection_1.default.define('Tipo_Activo', {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false
     },
-    delete: {
+    deleted: {
         type: sequelize_1.DataTypes.BOOLEAN,
         allowNull: false
     },
     who_deleted: {
         type: sequelize_1.DataTypes.STRING
     },
-    where_deleted: {
+    when_deleted: {
         type: sequelize_1.DataTypes.DATE
     },
-    who_add: {
+    who_created: {
         type: sequelize_1.DataTypes.STRING
     },
-    where_add: {
+    when_created: {
+        type: sequelize_1.DataTypes.DATE
+    },
+    who_modified: {
+        type: sequelize_1.DataTypes.STRING
+    },
+    when_modified: {
         type: sequelize_1.DataTypes.DATE
     }
 });

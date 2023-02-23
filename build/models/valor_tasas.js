@@ -34,7 +34,7 @@ const Valor_Tasas = connection_1.default.define('Valor_Tasas', {
     tasa_gamma: {
         type: sequelize_1.DataTypes.INTEGER
     },
-    delete: {
+    deleted: {
         type: sequelize_1.DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: false

@@ -5,13 +5,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_1 = require("sequelize");
 const connection_1 = __importDefault(require("../db/connection"));
-const Marca = connection_1.default.define('Marca', {
+const Modelo = connection_1.default.define('Modelo', {
     id: {
         type: sequelize_1.DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
     },
-    marca: {
+    modelo: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false
     },
@@ -38,4 +38,4 @@ const Marca = connection_1.default.define('Marca', {
         type: sequelize_1.DataTypes.DATE
     }
 });
-exports.default = Marca;
+exports.default = Modelo;

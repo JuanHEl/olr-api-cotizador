@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteOtherAdmin = exports.updateAdminPass = exports.updateAdmin = exports.loginAdmin = exports.registerAdministrador = exports.getAdmin = void 0;
+exports.showAdmin = exports.deleteOtherAdmin = exports.updateAdminPass = exports.updateAdmin = exports.loginAdmin = exports.registerAdministrador = exports.getAdmin = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const administrador_1 = __importDefault(require("../models/administrador"));
@@ -213,3 +213,20 @@ const deleteOtherAdmin = (req, res) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.deleteOtherAdmin = deleteOtherAdmin;
+const showAdmin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const admin = yield administrador_1.default.findOne({
+            where: { deleted: false },
+            attributes: ['id', 'nombre', 'email', 'tipo_administrador']
+        });
+        return res.json({
+            data: admin
+        });
+    }
+    catch (error) {
+        return res.status(500).json({
+            msg: 'Ocurrió un error en el servidor'
+        });
+    }
+});
+exports.showAdmin = showAdmin;

@@ -6,6 +6,10 @@ import valorResidualRouter from '../routes/valor_residual'
 import adminRouter from '../routes/administrador'
 import valorTasasRouter from '../routes/valor_tasas'
 import valorOtrosGastosRouter from '../routes/valor_otros_gastos'
+import yearsRouter from '../routes/years'
+import marcaRouter from '../routes/marca'
+import estadoActivoRouter from '../routes/estado_activo'
+import tipoActivoRouter from '../routes/tipo_activo'
 import cors from 'cors'
 
 import db from '../db/connection'
@@ -21,7 +25,11 @@ class Server {
         cotizacion: '/api/cotizacion',
         valores_residuales: '/api/valores_residuales',
         valores_tasas: '/api/valores_tasas',
-        valores_otros_gastos: '/api/valores_otros_gastos'
+        valores_otros_gastos: '/api/valores_otros_gastos',
+        years: '/api/years',
+        marca: '/api/marca',
+        estado_activo: '/api/estado_activo',
+        tipo_activo: '/api/tipo_activo'
     }
 
     constructor() {
@@ -64,6 +72,10 @@ class Server {
         this.app.use(this.apiPaths.administradores, adminRouter)
         this.app.use(this.apiPaths.valores_tasas, valorTasasRouter)
         this.app.use(this.apiPaths.valores_otros_gastos, valorOtrosGastosRouter)
+        this.app.use(this.apiPaths.years, yearsRouter)
+        this.app.use(this.apiPaths.marca, marcaRouter)
+        this.app.use(this.apiPaths.estado_activo, estadoActivoRouter)
+        this.app.use(this.apiPaths.tipo_activo, tipoActivoRouter)
     }
 
     listen() {

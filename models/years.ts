@@ -11,20 +11,26 @@ const Years = db.define('Years', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    delete: {
+    deleted: {
         type: DataTypes.BOOLEAN,
         allowNull: false
+    },
+    who_created: {
+        type: DataTypes.STRING
+    },
+    when_created:{
+        type: DataTypes.DATE
+    },
+    who_modified: {
+        type: DataTypes.STRING
+    },
+    when_modified: {
+        type: DataTypes.DATE
     },
     who_deleted: {
         type: DataTypes.STRING
     },
-    where_deleted:{
-        type: DataTypes.DATE
-    },
-    who_add: {
-        type: DataTypes.STRING
-    },
-    where_add:{
+    when_deleted:{
         type: DataTypes.DATE
     }
 })
