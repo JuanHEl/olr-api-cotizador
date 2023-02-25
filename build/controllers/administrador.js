@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.showAdmin = exports.deleteOtherAdmin = exports.updateAdminPass = exports.updateAdmin = exports.loginAdmin = exports.registerAdministrador = exports.getAdmin = void 0;
+exports.getAdminSession = exports.showAdmin = exports.deleteOtherAdmin = exports.updateAdminPass = exports.updateAdmin = exports.loginAdmin = exports.registerAdministrador = exports.getAdmin = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const administrador_1 = __importDefault(require("../models/administrador"));
@@ -77,7 +77,7 @@ const loginAdmin = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             });
         }
         const token = jsonwebtoken_1.default.sign({ id: admin.id }, process.env.SECRET_JWT);
-        res.status(201).json({
+        return res.json({
             nombre: admin.nombre,
             email: admin.email,
             telefono: admin.telefono,
@@ -230,3 +230,20 @@ const showAdmin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.showAdmin = showAdmin;
+const getAdminSession = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const admin = yield administrador_1.default.findOne({
+            where: { deleted: false },
+            attributes: ['nombre', 'email', 'tipo_administrador']
+        });
+        return res.json({
+            data: admin
+        });
+    }
+    catch (error) {
+        return res.status(500).json({
+            msg: 'Ocurrió un error en el servidor'
+        });
+    }
+});
+exports.getAdminSession = getAdminSession;

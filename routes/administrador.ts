@@ -1,5 +1,5 @@
 import { Router } from "express"
-import { getAdmin, loginAdmin, registerAdministrador, updateAdmin, updateAdminPass, deleteOtherAdmin, showAdmin } from '../controllers/administrador';
+import { getAdmin, loginAdmin, registerAdministrador, updateAdmin, updateAdminPass, deleteOtherAdmin, showAdmin, getAdminSession } from '../controllers/administrador';
 import { validarJWT } from '../middlewares/validarJWT';
 
 const router = Router()
@@ -12,5 +12,6 @@ router.put('/', updateAdmin)
 router.put('/password', updateAdminPass)
 router.put('/delete_admin', deleteOtherAdmin)
 router.get('/show_all_admins', showAdmin)
+router.get('/get_data_session',getAdminSession)
 
 export default router

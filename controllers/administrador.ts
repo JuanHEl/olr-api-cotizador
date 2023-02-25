@@ -65,7 +65,7 @@ export const loginAdmin = async (req: Request<{}, {}, { email: string, password:
             })
         }
         const token = jwt.sign({ id: admin.id }, process.env.SECRET_JWT as string)
-        res.status(201).json({
+         return res.json({
             nombre: admin.nombre,
             email: admin.email,
             telefono: admin.telefono,
@@ -202,6 +202,22 @@ export const showAdmin = async (req: Request, res: Response) => {
         const admin = await Administrador.findOne({
             where: { deleted: false },
             attributes: ['id', 'nombre', 'email', 'tipo_administrador']
+        })
+        return res.json({
+            data: admin
+        })
+    } catch (error) {
+        return res.status(500).json({
+            msg: 'Ocurrió un error en el servidor'
+        })
+    }
+}
+
+export const getAdminSession = async (req:Request,res:Response)=>{
+    try {
+        const admin = await Administrador.findOne({
+            where: { deleted: false },
+            attributes: ['nombre', 'email', 'tipo_administrador']
         })
         return res.json({
             data: admin
