@@ -95,16 +95,33 @@ const loginAdmin = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.loginAdmin = loginAdmin;
 const updateAdmin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
-    const { nombre, tipo_administrador, email } = req.body;
+    const { id, nombre, tipo_administrador, email } = req.body;
     try {
+        const myID = (_a = req.authData) === null || _a === void 0 ? void 0 : _a.id;
         const adminExist = yield administrador_1.default.findOne({
             where: {
-                id: (_a = req.authData) === null || _a === void 0 ? void 0 : _a.id
+                id: myID
             }
         });
         if (!adminExist) {
             return res.status(404).json({
                 msg: 'No se encuentra el administrador'
+            });
+        }
+        if (id !== myID) {
+            console.log('Dentro de la condicional');
+            const adminEdit = yield administrador_1.default.findOne({
+                where: {
+                    id
+                }
+            });
+            yield adminEdit.update({
+                nombre,
+                tipo_administrador,
+                email
+            });
+            return res.status(201).json({
+                msg: 'El administrador fue actualizado con éxito'
             });
         }
         yield adminExist.update({
@@ -195,7 +212,7 @@ const deleteOtherAdmin = (req, res) => __awaiter(void 0, void 0, void 0, functio
                 msg: 'No se pudo eliminar el administrador'
             });
         }
-        yield admin.update({
+        yield eliminado.update({
             deleted: true,
             who_deleted: admin.email,
             when_deleted: new Date()
@@ -215,7 +232,7 @@ const deleteOtherAdmin = (req, res) => __awaiter(void 0, void 0, void 0, functio
 exports.deleteOtherAdmin = deleteOtherAdmin;
 const showAdmin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const admin = yield administrador_1.default.findOne({
+        const admin = yield administrador_1.default.findAll({
             where: { deleted: false },
             attributes: ['id', 'nombre', 'email', 'tipo_administrador']
         });
@@ -236,9 +253,7 @@ const getAdminSession = (req, res) => __awaiter(void 0, void 0, void 0, function
             where: { deleted: false },
             attributes: ['nombre', 'email', 'tipo_administrador']
         });
-        return res.json({
-            data: admin
-        });
+        return res.json(admin);
     }
     catch (error) {
         return res.status(500).json({

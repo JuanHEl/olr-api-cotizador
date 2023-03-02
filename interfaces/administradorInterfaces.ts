@@ -1,5 +1,6 @@
 
 export interface IDTOAdministrador {
+    id?:number,
     nombre: string,
     email: string,
     password: string,

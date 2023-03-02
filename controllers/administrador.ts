@@ -65,7 +65,7 @@ export const loginAdmin = async (req: Request<{}, {}, { email: string, password:
             })
         }
         const token = jwt.sign({ id: admin.id }, process.env.SECRET_JWT as string)
-         return res.json({
+        return res.json({
             nombre: admin.nombre,
             email: admin.email,
             telefono: admin.telefono,
@@ -82,16 +82,33 @@ export const loginAdmin = async (req: Request<{}, {}, { email: string, password:
 }
 
 export const updateAdmin = async (req: Request<{}, {}, IDTOAdministrador>, res: Response) => {
-    const { nombre, tipo_administrador, email } = req.body
+    const { id, nombre, tipo_administrador, email } = req.body
     try {
+        const myID = req.authData?.id
         const adminExist = await Administrador.findOne({
             where: {
-                id: req.authData?.id
+                id: myID
             }
         })
         if (!adminExist) {
             return res.status(404).json({
                 msg: 'No se encuentra el administrador'
+            })
+        }
+        if (id !== myID) {
+            console.log('Dentro de la condicional')
+            const adminEdit = await Administrador.findOne({
+                where: {
+                    id
+                }
+            })
+            await adminEdit.update({
+                nombre,
+                tipo_administrador,
+                email
+            })
+            return res.status(201).json({
+                msg: 'El administrador fue actualizado con éxito'
             })
         }
         await adminExist.update({
@@ -180,7 +197,7 @@ export const deleteOtherAdmin = async (req: Request<{}, {}, { id_eliminar: numbe
                 msg: 'No se pudo eliminar el administrador'
             })
         }
-        await admin.update({
+        await eliminado.update({
             deleted: true,
             who_deleted: admin.email,
             when_deleted: new Date()
@@ -199,7 +216,7 @@ export const deleteOtherAdmin = async (req: Request<{}, {}, { id_eliminar: numbe
 
 export const showAdmin = async (req: Request, res: Response) => {
     try {
-        const admin = await Administrador.findOne({
+        const admin = await Administrador.findAll({
             where: { deleted: false },
             attributes: ['id', 'nombre', 'email', 'tipo_administrador']
         })
@@ -213,15 +230,13 @@ export const showAdmin = async (req: Request, res: Response) => {
     }
 }
 
-export const getAdminSession = async (req:Request,res:Response)=>{
+export const getAdminSession = async (req: Request, res: Response) => {
     try {
         const admin = await Administrador.findOne({
             where: { deleted: false },
             attributes: ['nombre', 'email', 'tipo_administrador']
         })
-        return res.json({
-            data: admin
-        })
+        return res.json(admin)
     } catch (error) {
         return res.status(500).json({
             msg: 'Ocurrió un error en el servidor'
