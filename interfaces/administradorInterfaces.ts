@@ -1,6 +1,6 @@
 
 export interface IDTOAdministrador {
-    id?:number,
+    id?: number,
     nombre: string,
     email: string,
     password: string,
@@ -10,4 +10,9 @@ export interface IDTOAdministrador {
 export interface IDTOUpdatePassword {
     password: string,
     newPassword: string
-  }
+}
+
+export interface IDTOReplacePassword {
+    id_editPassword: number,
+    newPassword: string
+}

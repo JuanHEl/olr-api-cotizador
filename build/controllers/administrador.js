@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAdminSession = exports.showAdmin = exports.deleteOtherAdmin = exports.updateAdminPass = exports.updateAdmin = exports.loginAdmin = exports.registerAdministrador = exports.getAdmin = void 0;
+exports.replacePassword = exports.getAdminSession = exports.showAdmin = exports.deleteOtherAdmin = exports.updateAdminPass = exports.updateAdmin = exports.loginAdmin = exports.registerAdministrador = exports.getAdmin = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const administrador_1 = __importDefault(require("../models/administrador"));
@@ -262,3 +262,46 @@ const getAdminSession = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.getAdminSession = getAdminSession;
+const replacePassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _d;
+    const { id_editPassword, newPassword } = req.body;
+    try {
+        // Encuentra al administrador
+        const admin = yield administrador_1.default.findOne({
+            where: {
+                id: (_d = req.authData) === null || _d === void 0 ? void 0 : _d.id
+            }
+        });
+        if (!admin) {
+            return res.status(404).json({
+                msg: 'No se encuentra el administrador'
+            });
+        }
+        // Encuentra al administrador al cual se le cambiará la contraseña
+        const administradorUpdate = yield administrador_1.default.findOne({
+            where: {
+                id: id_editPassword
+            }
+        });
+        if (!administradorUpdate) {
+            return res.status(404).json({
+                msg: 'No se pudo econtrar al administrador'
+            });
+        }
+        const hash = yield bcrypt_1.default.hash(newPassword, 10);
+        yield administradorUpdate.update({
+            password: hash
+        });
+        return res.status(201).json({
+            msg: 'Se ha actualizado la contraseña con éxito'
+        });
+    }
+    catch (error) {
+        // Retorna un error si es que ocurre en la operación
+        return res.status(500).json({
+            msg: 'Error al actualizar la contraseña del administrador',
+            error: error
+        });
+    }
+});
+exports.replacePassword = replacePassword;

@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { IDTOAdministrador, IDTOUpdatePassword } from '../interfaces/administradorInterfaces';
+import { IDTOAdministrador, IDTOUpdatePassword, IDTOReplacePassword } from '../interfaces/administradorInterfaces';
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import Administrador from '../models/administrador';
@@ -240,6 +240,47 @@ export const getAdminSession = async (req: Request, res: Response) => {
     } catch (error) {
         return res.status(500).json({
             msg: 'Ocurrió un error en el servidor'
+        })
+    }
+}
+
+export const replacePassword = async (req: Request<{}, {}, IDTOReplacePassword>, res: Response) => {
+    const { id_editPassword, newPassword } = req.body
+    try {
+        // Encuentra al administrador
+        const admin = await Administrador.findOne({
+            where: {
+                id: req.authData?.id
+            }
+        })
+        if (!admin) {
+            return res.status(404).json({
+                msg: 'No se encuentra el administrador'
+            })
+        }
+        // Encuentra al administrador al cual se le cambiará la contraseña
+        const administradorUpdate = await Administrador.findOne({
+            where: {
+                id: id_editPassword
+            }
+        })
+        if (!administradorUpdate) {
+            return res.status(404).json({
+                msg: 'No se pudo econtrar al administrador'
+            })
+        }
+        const hash = await bcrypt.hash(newPassword, 10)
+        await administradorUpdate.update({
+            password: hash
+        })
+        return res.status(201).json({
+            msg: 'Se ha actualizado la contraseña con éxito'
+        })
+    } catch (error) {
+        // Retorna un error si es que ocurre en la operación
+        return res.status(500).json({
+            msg: 'Error al actualizar la contraseña del administrador',
+            error: error
         })
     }
 }
