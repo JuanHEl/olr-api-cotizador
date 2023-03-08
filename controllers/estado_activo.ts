@@ -90,7 +90,7 @@ export const updateEstadoActivo = async (req: Request<{}, {}, { id: number, esta
 
 export const showEstadoActivo = async (req: Request, res: Response) => {
     try {
-        const estadoActivo = await Estado_Activo.findOne({
+        const estadoActivo = await Estado_Activo.findAll({
             where: { deleted: false },
             attributes: ['id', 'estado_activo']
         })
@@ -104,8 +104,8 @@ export const showEstadoActivo = async (req: Request, res: Response) => {
     }
 }
 
-export const deleteEstadoActivo = async (req:Request<{},{},{id:number }>,res:Response) => {
-    const { id } = req.body;
+export const deleteEstadoActivo = async (req:Request<{},{},{id_eliminar:number }>,res:Response) => {
+    const { id_eliminar } = req.body;
     try {
         const admin = await Administrador.findOne({
             where: {
@@ -119,7 +119,7 @@ export const deleteEstadoActivo = async (req:Request<{},{},{id:number }>,res:Res
         }
         const eliminado = await Estado_Activo.findOne({
             where:{
-                id
+                id:id_eliminar
             }
         })
         if(!eliminado){

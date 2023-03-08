@@ -7,6 +7,6 @@ const router = (0, express_1.Router)();
 router.use(validarJWT_1.validarJWT);
 router.post('/', valor_tasas_1.registerValoresTasa);
 router.put('/', valor_tasas_1.updateTasas);
-router.get('/', valor_tasas_1.getTasasByTipoActivo);
+router.get('/:tipo_activo', valor_tasas_1.getTasasByTipoActivo);
 // router.get('/:tipo_activoPages', getTasasByTipoActivoPaginate)
 exports.default = router;

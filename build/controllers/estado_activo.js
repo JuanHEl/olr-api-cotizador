@@ -103,7 +103,7 @@ const updateEstadoActivo = (req, res) => __awaiter(void 0, void 0, void 0, funct
 exports.updateEstadoActivo = updateEstadoActivo;
 const showEstadoActivo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const estadoActivo = yield estado_activo_1.default.findOne({
+        const estadoActivo = yield estado_activo_1.default.findAll({
             where: { deleted: false },
             attributes: ['id', 'estado_activo']
         });
@@ -120,7 +120,7 @@ const showEstadoActivo = (req, res) => __awaiter(void 0, void 0, void 0, functio
 exports.showEstadoActivo = showEstadoActivo;
 const deleteEstadoActivo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _c;
-    const { id } = req.body;
+    const { id_eliminar } = req.body;
     try {
         const admin = yield administrador_1.default.findOne({
             where: {
@@ -134,7 +134,7 @@ const deleteEstadoActivo = (req, res) => __awaiter(void 0, void 0, void 0, funct
         }
         const eliminado = yield estado_activo_1.default.findOne({
             where: {
-                id
+                id: id_eliminar
             }
         });
         if (!eliminado) {

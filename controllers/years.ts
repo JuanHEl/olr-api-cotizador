@@ -89,7 +89,7 @@ export const updateYears = async (req: Request<{}, {}, { id: number, year: numbe
 
 export const showYears = async (req: Request, res: Response) => {
     try {
-        const year = await Years.findOne({
+        const year = await Years.findAll({
             where: { deleted: false },
             attributes: ['id', 'year']
         })
@@ -103,8 +103,8 @@ export const showYears = async (req: Request, res: Response) => {
     }
 }
 
-export const deleteYears = async (req:Request<{},{},{id:number }>,res:Response) => {
-    const { id } = req.body;
+export const deleteYears = async (req: Request<{}, {}, { id_eliminar: number }>, res: Response) => {
+    const { id_eliminar } = req.body;
     try {
         const admin = await Administrador.findOne({
             where: {
@@ -117,22 +117,22 @@ export const deleteYears = async (req:Request<{},{},{id:number }>,res:Response) 
             })
         }
         const eliminado = await Years.findOne({
-            where:{
-                id
+            where: {
+                id:id_eliminar
             }
         })
-        if(!eliminado){
+        if (!eliminado) {
             return res.status(404).json({
                 msg: 'No se pudo eliminar el año'
             })
         }
         await eliminado.update({
-            deleted:true,
-            who_deleted:admin.email,
+            deleted: true,
+            who_deleted: admin.email,
             when_deleted: new Date()
         })
         return res.status(201).json({
-            msg:'El año se ha eliminado con éxito'
+            msg: 'El año se ha eliminado con éxito'
         })
     } catch (error) {
         return res.status(500).json({

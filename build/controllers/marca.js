@@ -103,7 +103,7 @@ const updateMarca = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.updateMarca = updateMarca;
 const showMarca = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const marca = yield marca_1.default.findOne({
+        const marca = yield marca_1.default.findAll({
             where: { deleted: false },
             attributes: ['id', 'marca']
         });
@@ -120,7 +120,7 @@ const showMarca = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.showMarca = showMarca;
 const deleteMarca = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _c;
-    const { id } = req.body;
+    const { id_eliminar } = req.body;
     try {
         const admin = yield administrador_1.default.findOne({
             where: {
@@ -134,7 +134,7 @@ const deleteMarca = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         }
         const eliminado = yield marca_1.default.findOne({
             where: {
-                id
+                id: id_eliminar
             }
         });
         if (!eliminado) {

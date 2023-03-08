@@ -92,7 +92,7 @@ export const updateValoresResiduales = async (req: Request<{}, {}, IDTOValorResi
 
 export const showValorValoresResiduales = async (req: Request, res: Response) => {
     try {
-        const valoresResiduales = await Valor_Residual.findOne({
+        const valoresResiduales = await Valor_Residual.findAll({
             where: { deleted: false },
             attributes: ['id', 'plazo', 'minimo', 'maximo']
         })

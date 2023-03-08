@@ -90,8 +90,8 @@ export const registerValoresTasa = async (req: Request<{}, {}, IDTOValorTasas>, 
     }
 }
 
-export const getTasasByTipoActivo = async (req: Request<{}, {}, { tipo_activo: string }>, res: Response) => {
-    const { tipo_activo } = req.body;
+export const getTasasByTipoActivo = async (req: Request<{ tipo_activo: string }>, res: Response) => {
+    const { tipo_activo } = req.params;
     try {
         const admin = await Administrador.findOne({
             where: {
@@ -109,9 +109,8 @@ export const getTasasByTipoActivo = async (req: Request<{}, {}, { tipo_activo: s
                     [Op.like]: `%${tipo_activo}%`,
                 },
             },
-            attributes: ['id','tasa_a', 'tasa_b', 'tasa_alfa', 'tasa_beta', 'tasa_gamma'], // Solo obtener las columnas que deseas mostrar
+            attributes: ['id', 'plazo', 'tasa_a', 'tasa_b', 'tasa_alfa', 'tasa_beta', 'tasa_gamma'], // Solo obtener las columnas que deseas mostrar
         });
-
         return res.status(200).json({
             tipo_activo,
             data: rows,
@@ -123,8 +122,9 @@ export const getTasasByTipoActivo = async (req: Request<{}, {}, { tipo_activo: s
     }
 }
 
+
 export const updateTasas = async (req: Request<{}, {}, IDTOValorTasasUpdate>, res: Response) => {
-    const { tasa_a, tasa_b, tasa_alfa, tasa_beta, tasa_gamma, id } = req.body;
+    const { id, tasa_a, tasa_b, tasa_alfa, tasa_beta, tasa_gamma } = req.body;
     try {
         const admin = await Administrador.findOne({
             where: {
@@ -137,9 +137,11 @@ export const updateTasas = async (req: Request<{}, {}, IDTOValorTasasUpdate>, re
             })
         }
         const updatedRow = await Valor_Tasas.update(
-            { tasa_a, tasa_b, tasa_alfa, tasa_beta, tasa_gamma, 
-                who_modified:admin.email,
-                when_modified: new Date() },
+            {
+                tasa_a, tasa_b, tasa_alfa, tasa_beta, tasa_gamma,
+                who_modified: admin.email,
+                when_modified: new Date()
+            },
             { where: { id } }
         );
 

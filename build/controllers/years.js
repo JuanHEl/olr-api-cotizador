@@ -102,7 +102,7 @@ const updateYears = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.updateYears = updateYears;
 const showYears = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const year = yield years_1.default.findOne({
+        const year = yield years_1.default.findAll({
             where: { deleted: false },
             attributes: ['id', 'year']
         });
@@ -119,7 +119,7 @@ const showYears = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.showYears = showYears;
 const deleteYears = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _c;
-    const { id } = req.body;
+    const { id_eliminar } = req.body;
     try {
         const admin = yield administrador_1.default.findOne({
             where: {
@@ -133,7 +133,7 @@ const deleteYears = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         }
         const eliminado = yield years_1.default.findOne({
             where: {
-                id
+                id: id_eliminar
             }
         });
         if (!eliminado) {

@@ -104,7 +104,7 @@ const updateValoresResiduales = (req, res) => __awaiter(void 0, void 0, void 0, 
 exports.updateValoresResiduales = updateValoresResiduales;
 const showValorValoresResiduales = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const valoresResiduales = yield valor_residual_1.default.findOne({
+        const valoresResiduales = yield valor_residual_1.default.findAll({
             where: { deleted: false },
             attributes: ['id', 'plazo', 'minimo', 'maximo']
         });

@@ -103,7 +103,7 @@ const registerValoresTasa = (req, res) => __awaiter(void 0, void 0, void 0, func
 exports.registerValoresTasa = registerValoresTasa;
 const getTasasByTipoActivo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _b;
-    const { tipo_activo } = req.body;
+    const { tipo_activo } = req.params;
     try {
         const admin = yield administrador_1.default.findOne({
             where: {
@@ -121,7 +121,7 @@ const getTasasByTipoActivo = (req, res) => __awaiter(void 0, void 0, void 0, fun
                     [sequelize_1.Op.like]: `%${tipo_activo}%`,
                 },
             },
-            attributes: ['id', 'tasa_a', 'tasa_b', 'tasa_alfa', 'tasa_beta', 'tasa_gamma'], // Solo obtener las columnas que deseas mostrar
+            attributes: ['id', 'plazo', 'tasa_a', 'tasa_b', 'tasa_alfa', 'tasa_beta', 'tasa_gamma'], // Solo obtener las columnas que deseas mostrar
         });
         return res.status(200).json({
             tipo_activo,
@@ -137,7 +137,7 @@ const getTasasByTipoActivo = (req, res) => __awaiter(void 0, void 0, void 0, fun
 exports.getTasasByTipoActivo = getTasasByTipoActivo;
 const updateTasas = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _c;
-    const { tasa_a, tasa_b, tasa_alfa, tasa_beta, tasa_gamma, id } = req.body;
+    const { id, tasa_a, tasa_b, tasa_alfa, tasa_beta, tasa_gamma } = req.body;
     try {
         const admin = yield administrador_1.default.findOne({
             where: {
@@ -149,9 +149,11 @@ const updateTasas = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 msg: 'No se pudo crear el valor, ocurrió un error con la identificación del usuario'
             });
         }
-        const updatedRow = yield valor_tasas_1.default.update({ tasa_a, tasa_b, tasa_alfa, tasa_beta, tasa_gamma,
+        const updatedRow = yield valor_tasas_1.default.update({
+            tasa_a, tasa_b, tasa_alfa, tasa_beta, tasa_gamma,
             who_modified: admin.email,
-            when_modified: new Date() }, { where: { id } });
+            when_modified: new Date()
+        }, { where: { id } });
         if (updatedRow[0] === 0) {
             return res.status(404).json({
                 msg: `No se encontró la fila con el id ${id}`,

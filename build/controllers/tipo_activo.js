@@ -102,7 +102,7 @@ const updateTipoActivo = (req, res) => __awaiter(void 0, void 0, void 0, functio
 exports.updateTipoActivo = updateTipoActivo;
 const showTipoActivo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const tipo_activo = yield tipo_activo_1.default.findOne({
+        const tipo_activo = yield tipo_activo_1.default.findAll({
             where: { deleted: false },
             attributes: ['id', 'tipo_activo']
         });
@@ -119,7 +119,7 @@ const showTipoActivo = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.showTipoActivo = showTipoActivo;
 const deleteTipoActivo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _c;
-    const { id } = req.body;
+    const { id_eliminar } = req.body;
     try {
         const admin = yield administrador_1.default.findOne({
             where: {
@@ -133,7 +133,7 @@ const deleteTipoActivo = (req, res) => __awaiter(void 0, void 0, void 0, functio
         }
         const eliminado = yield tipo_activo_1.default.findOne({
             where: {
-                id
+                id: id_eliminar
             }
         });
         if (!eliminado) {

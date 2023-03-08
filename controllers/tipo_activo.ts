@@ -89,7 +89,7 @@ export const updateTipoActivo = async (req: Request<{}, {}, { id: number, tipo_a
 
 export const showTipoActivo = async (req: Request, res: Response) => {
     try {
-        const tipo_activo = await Tipo_Activo.findOne({
+        const tipo_activo = await Tipo_Activo.findAll({
             where: { deleted: false },
             attributes: ['id', 'tipo_activo']
         })
@@ -103,8 +103,8 @@ export const showTipoActivo = async (req: Request, res: Response) => {
     }
 }
 
-export const deleteTipoActivo = async (req:Request<{},{},{id:number }>,res:Response) => {
-    const { id } = req.body;
+export const deleteTipoActivo = async (req:Request<{},{},{id_eliminar:number }>,res:Response) => {
+    const { id_eliminar } = req.body;
     try {
         const admin = await Administrador.findOne({
             where: {
@@ -118,7 +118,7 @@ export const deleteTipoActivo = async (req:Request<{},{},{id:number }>,res:Respo
         }
         const eliminado = await Tipo_Activo.findOne({
             where:{
-                id
+                id:id_eliminar
             }
         })
         if(!eliminado){

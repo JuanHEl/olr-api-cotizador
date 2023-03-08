@@ -90,7 +90,7 @@ export const updateMarca = async (req: Request<{}, {}, { id: number, marca: stri
 
 export const showMarca = async (req: Request, res: Response) => {
     try {
-        const marca = await Marca.findOne({
+        const marca = await Marca.findAll({
             where: { deleted: false },
             attributes: ['id', 'marca']
         })
@@ -104,8 +104,8 @@ export const showMarca = async (req: Request, res: Response) => {
     }
 }
 
-export const deleteMarca = async (req:Request<{},{},{id:number }>,res:Response) => {
-    const { id } = req.body;
+export const deleteMarca = async (req:Request<{},{},{id_eliminar:number }>,res:Response) => {
+    const { id_eliminar } = req.body;
     try {
         const admin = await Administrador.findOne({
             where: {
@@ -119,7 +119,7 @@ export const deleteMarca = async (req:Request<{},{},{id:number }>,res:Response) 
         }
         const eliminado = await Marca.findOne({
             where:{
-                id
+                id:id_eliminar
             }
         })
         if(!eliminado){

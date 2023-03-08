@@ -93,7 +93,7 @@ const updateOtrosGastos = (req, res) => __awaiter(void 0, void 0, void 0, functi
         const updatedInstalacion = instalacion !== undefined ? instalacion : currentInstalacion;
         const updatedGPS = gps_anual !== undefined ? gps_anual : currentGPS;
         const updatedGastos = gastos_notariales !== undefined ? gastos_notariales : currentGastos;
-        const total = (0, calculateTotalServices_1.calculateTotal)({ instalacion: updatedInstalacion, gps_anual: updatedGPS, gastos_notariales: updatedGastos });
+        const total = (0, calculateTotalServices_1.calculateTotal)({ instalacion: parseFloat(updatedInstalacion), gps_anual: parseFloat(updatedGPS), gastos_notariales: parseFloat(updatedGastos) });
         const updatedRow = yield valor_otros_gastos_1.default.update({
             gastos_notariales: updatedGastos,
             gps_anual: updatedGPS,
@@ -120,7 +120,7 @@ const updateOtrosGastos = (req, res) => __awaiter(void 0, void 0, void 0, functi
 exports.updateOtrosGastos = updateOtrosGastos;
 const showValorOtrosGastos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const valoresOtrosGastos = yield valor_otros_gastos_1.default.findOne({
+        const valoresOtrosGastos = yield valor_otros_gastos_1.default.findAll({
             where: { deleted: false },
             attributes: ['id', 'plazo', 'instalacion', 'gps_anual', 'gastos_notariales', 'total']
         });

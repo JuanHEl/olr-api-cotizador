@@ -78,7 +78,7 @@ export const updateOtrosGastos = async (req: Request<{}, {}, IDTOValorOtrosGasto
         const updatedInstalacion = instalacion !== undefined ? instalacion : currentInstalacion;
         const updatedGPS = gps_anual !== undefined ? gps_anual : currentGPS;
         const updatedGastos = gastos_notariales !== undefined ? gastos_notariales : currentGastos;
-        const total = calculateTotal({ instalacion: updatedInstalacion, gps_anual: updatedGPS, gastos_notariales: updatedGastos });
+        const total = calculateTotal({ instalacion: parseFloat(updatedInstalacion), gps_anual: parseFloat(updatedGPS), gastos_notariales: parseFloat(updatedGastos) });
 
         const updatedRow = await Valor_Otros_Gastos.update(
             {
@@ -109,7 +109,7 @@ export const updateOtrosGastos = async (req: Request<{}, {}, IDTOValorOtrosGasto
 
 export const showValorOtrosGastos = async (req: Request, res: Response) => {
     try {
-        const valoresOtrosGastos = await Valor_Otros_Gastos.findOne({
+        const valoresOtrosGastos = await Valor_Otros_Gastos.findAll({
             where: { deleted: false },
             attributes: ['id', 'plazo', 'instalacion', 'gps_anual', 'gastos_notariales', 'total']
         })
