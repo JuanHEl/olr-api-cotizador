@@ -1,10 +1,10 @@
-import { Router } from "express"
-import { getCotizacion } from "../controllers/cotizacion"
-import { validarJWT } from '../middlewares/validarJWT';
+import { Router } from "express";
+import { getCotizacion } from "../controllers/cotizacion";
+import { validarJWT } from "../middlewares/validarJWT";
 
-const router = Router()
+const cotizacionRouter = Router();
 
-router.use(validarJWT)
-router.get('/', getCotizacion)
+cotizacionRouter.use(validarJWT);
+cotizacionRouter.get("/", getCotizacion);
 
-export default router
+export { cotizacionRouter };

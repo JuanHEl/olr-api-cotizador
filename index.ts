@@ -1,37 +1,68 @@
-// import express, { Express, Request, Response } from 'express';
-// import dotenv from 'dotenv';
+//configuración de las variables de entorno
+import dotenv from "dotenv";
+dotenv.config();
+import cors from "cors";
+import express from "express";
+import {
+  administradorRouter,
+  clienteRouter,
+  cotizacionRouter,
+  estadoActivoRouter,
+  marcaRouter,
+  tipoActivoRouter,
+  usuarioRouter,
+  valorOtrosGastosRouter,
+  valorResidualRouter,
+  valorTasasRouter,
+  yearsRouter,
+} from "./routes";
+import { exit } from "process";
+import { db } from "./config";
 
-// dotenv.config();
+//variable para el puerto
+const PORT = process.env.PORT;
 
-// const app: Express = express();
-// const port = process.env.PORT;
+//servidor
+const app = express();
 
-// app.get('/', (req: Request, res: Response) => {
-//   res.send('Express + TypeScript Server');
-// });
+//middlewares
+app.use(express.json());
+app.use(cors());
 
-// app.listen(port, () => {
-//   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
-// });
-
-
-import dotenv from 'dotenv'
-import Server from './models/server'
-import sequelize from "./db/connection";
-
+//custom module for auth data
 declare module "express" {
-    export interface Request {
-        authData?:{
-            id?:string,
-            iat?:any
-        }
-    }
+  export interface Request {
+    authData?: {
+      id?: string;
+      iat?: any;
+    };
+  }
 }
+//endpoints
+app.use("/api/administrador", administradorRouter);
+app.use("/api/cliente", clienteRouter);
+app.use("/api/cotizacion", cotizacionRouter);
+app.use("/api/estado_activo", estadoActivoRouter);
+app.use("/api/marca", marcaRouter);
+app.use("/api/tipo_activo", tipoActivoRouter);
+app.use("/api/usuarios", usuarioRouter);
+app.use("/api/valores_otros_gastos", valorOtrosGastosRouter);
+app.use("/api/valores_residuales", valorResidualRouter);
+app.use("/api/valores_tasas", valorTasasRouter);
+app.use("/api/years", yearsRouter);
 
-//Configurar dot
-dotenv.config()
-sequelize.sync({force:false, alter:true});
+//función de inicialización del server
+const startServer = async () => {
+  try {
+    await db.sync({ force: false, alter: true });
+    app.listen(PORT, () => {
+      console.log(`[SERVER]: server is running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.log(error);
+    exit(1);
+  }
+};
 
-const server = new Server()
-
-server.listen()
+//inicializacióñ del server
+startServer();

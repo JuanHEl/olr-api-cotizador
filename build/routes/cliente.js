@@ -1,11 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.clienteRouter = void 0;
 const express_1 = require("express");
 const cliente_1 = require("../controllers/cliente");
 const validarJWT_1 = require("../middlewares/validarJWT");
-const router = (0, express_1.Router)();
-router.post('/login', cliente_1.loginCliente);
-router.use(validarJWT_1.validarJWT);
-router.get('/', cliente_1.getCliente);
-router.post('/', cliente_1.registerCliente);
-exports.default = router;
+const clienteRouter = (0, express_1.Router)();
+exports.clienteRouter = clienteRouter;
+clienteRouter.post("/login", cliente_1.loginCliente);
+clienteRouter.use(validarJWT_1.validarJWT);
+clienteRouter.get("/", cliente_1.getCliente);
+clienteRouter.post("/", cliente_1.registerCliente);

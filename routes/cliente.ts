@@ -1,12 +1,16 @@
-import { Router } from "express"
-import { getCliente, registerCliente, loginCliente } from "../controllers/cliente";
-import { validarJWT } from '../middlewares/validarJWT';
+import { Router } from "express";
+import {
+  getCliente,
+  registerCliente,
+  loginCliente,
+} from "../controllers/cliente";
+import { validarJWT } from "../middlewares/validarJWT";
 
-const router = Router()
+const clienteRouter = Router();
 
-router.post('/login', loginCliente)
-router.use(validarJWT)
-router.get('/', getCliente)
-router.post('/', registerCliente)
+clienteRouter.post("/login", loginCliente);
+clienteRouter.use(validarJWT);
+clienteRouter.get("/", getCliente);
+clienteRouter.post("/", registerCliente);
 
-export default router
+export { clienteRouter };

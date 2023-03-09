@@ -1,12 +1,17 @@
-import { Router } from "express"
+import { Router } from "express";
 import { validarJWT } from "../middlewares/validarJWT";
-import { getValoresOtrosGastos, registerValoresOtrosGastos, updateOtrosGastos, showValorOtrosGastos } from '../controllers/valor_otros_gastos';
+import {
+  getValoresOtrosGastos,
+  registerValoresOtrosGastos,
+  updateOtrosGastos,
+  showValorOtrosGastos,
+} from "../controllers/valor_otros_gastos";
 
-const router = Router()
-router.use(validarJWT)
-router.get('/', getValoresOtrosGastos)
-router.post('/', registerValoresOtrosGastos)
-router.put('/', updateOtrosGastos)
-router.get('/show_all_otros_gastos', showValorOtrosGastos)
+const valorOtrosGastosRouter = Router();
+valorOtrosGastosRouter.use(validarJWT);
+valorOtrosGastosRouter.get("/", getValoresOtrosGastos);
+valorOtrosGastosRouter.post("/", registerValoresOtrosGastos);
+valorOtrosGastosRouter.put("/", updateOtrosGastos);
+valorOtrosGastosRouter.get("/show_all_otros_gastos", showValorOtrosGastos);
 
-export default router
+export { valorOtrosGastosRouter };

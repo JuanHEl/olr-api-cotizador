@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.valorTasasRouter = void 0;
 const express_1 = require("express");
 const valor_tasas_1 = require("../controllers/valor_tasas");
 const validarJWT_1 = require("../middlewares/validarJWT");
-const router = (0, express_1.Router)();
-router.use(validarJWT_1.validarJWT);
-router.post('/', valor_tasas_1.registerValoresTasa);
-router.put('/', valor_tasas_1.updateTasas);
-router.get('/:tipo_activo', valor_tasas_1.getTasasByTipoActivo);
-// router.get('/:tipo_activoPages', getTasasByTipoActivoPaginate)
-exports.default = router;
+const valorTasasRouter = (0, express_1.Router)();
+exports.valorTasasRouter = valorTasasRouter;
+valorTasasRouter.use(validarJWT_1.validarJWT);
+valorTasasRouter.post("/", valor_tasas_1.registerValoresTasa);
+valorTasasRouter.put("/", valor_tasas_1.updateTasas);
+valorTasasRouter.get("/:tipo_activo", valor_tasas_1.getTasasByTipoActivo);
