@@ -42,5 +42,5 @@ const Administrador = config_1.db.define("Administrador", {
     when_modified: {
         type: sequelize_1.DataTypes.DATE,
     }
-});
+}, { tableName: "administrador" });
 exports.Administrador = Administrador;

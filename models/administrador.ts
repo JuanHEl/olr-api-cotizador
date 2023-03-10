@@ -41,6 +41,6 @@ const Administrador = db.define<Model<IAdministrador, any>, IAdministrador>("Adm
   when_modified: {
     type: DataTypes.DATE,
   }
-});
+}, {tableName: "administrador"});
 
 export {Administrador};
