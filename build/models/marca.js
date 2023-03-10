@@ -35,5 +35,5 @@ const Marca = config_1.db.define("Marca", {
     when_modified: {
         type: sequelize_1.DataTypes.DATE,
     },
-});
+}, { tableName: "marca" });
 exports.Marca = Marca;

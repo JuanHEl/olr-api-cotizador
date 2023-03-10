@@ -34,6 +34,6 @@ const Years = db.define<Model<IYears, any>, IYears>("Years", {
   when_deleted: {
     type: DataTypes.DATE,
   },
-});
+}, {tableName: "year"});
 
 export { Years };

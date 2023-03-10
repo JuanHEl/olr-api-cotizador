@@ -1,3 +1,4 @@
+
 export * from "./administrador";
 export * from "./cliente";
 export * from "./cotizacion";
@@ -9,3 +10,4 @@ export * from "./valor_otros_gastos";
 export * from "./valor_residual";
 export * from "./valor_tasas";
 export * from "./years";
+export * from "./editable"

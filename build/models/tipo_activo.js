@@ -35,5 +35,5 @@ const Tipo_Activo = config_1.db.define("Tipo_Activo", {
     when_modified: {
         type: sequelize_1.DataTypes.DATE,
     },
-});
+}, { tableName: "tipo_activo" });
 exports.Tipo_Activo = Tipo_Activo;

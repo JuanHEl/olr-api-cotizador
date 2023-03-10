@@ -54,6 +54,6 @@ const Valor_Tasas = db.define<Model<IValorTasas, any>, IValorTasas>("Valor_Tasas
   when_modified: {
     type: DataTypes.DATE,
   },
-});
+}, {tableName: "valor_tasas"});
 
 export { Valor_Tasas };

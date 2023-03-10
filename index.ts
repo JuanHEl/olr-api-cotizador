@@ -15,6 +15,7 @@ import {
   valorResidualRouter,
   valorTasasRouter,
   yearsRouter,
+  editableRouter
 } from "./routes";
 import { exit } from "process";
 import { db } from "./config";
@@ -50,6 +51,7 @@ app.use("/api/valores_otros_gastos", valorOtrosGastosRouter);
 app.use("/api/valores_residuales", valorResidualRouter);
 app.use("/api/valores_tasas", valorTasasRouter);
 app.use("/api/years", yearsRouter);
+app.use("/api/editable", editableRouter)
 
 //función de inicialización del server
 const startServer = async () => {

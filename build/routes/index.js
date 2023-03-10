@@ -25,3 +25,4 @@ __exportStar(require("./valor_otros_gastos"), exports);
 __exportStar(require("./valor_residual"), exports);
 __exportStar(require("./valor_tasas"), exports);
 __exportStar(require("./years"), exports);
+__exportStar(require("./editable"), exports);

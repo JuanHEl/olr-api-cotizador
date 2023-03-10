@@ -39,6 +39,7 @@ app.use("/api/valores_otros_gastos", routes_1.valorOtrosGastosRouter);
 app.use("/api/valores_residuales", routes_1.valorResidualRouter);
 app.use("/api/valores_tasas", routes_1.valorTasasRouter);
 app.use("/api/years", routes_1.yearsRouter);
+app.use("/api/editable", routes_1.editableRouter);
 //función de inicialización del server
 const startServer = () => __awaiter(void 0, void 0, void 0, function* () {
     try {

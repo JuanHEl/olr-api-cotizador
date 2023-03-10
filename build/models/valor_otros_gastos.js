@@ -51,5 +51,5 @@ const Valor_Otros_Gastos = config_1.db.define("Valor_Otros_Gastos", {
     when_modified: {
         type: sequelize_1.DataTypes.DATE,
     },
-});
+}, { tableName: "valor_otros_gastos" });
 exports.Valor_Otros_Gastos = Valor_Otros_Gastos;

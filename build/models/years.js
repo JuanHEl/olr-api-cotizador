@@ -35,5 +35,5 @@ const Years = config_1.db.define("Years", {
     when_deleted: {
         type: sequelize_1.DataTypes.DATE,
     },
-});
+}, { tableName: "year" });
 exports.Years = Years;

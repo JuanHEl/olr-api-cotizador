@@ -35,6 +35,6 @@ const Log = config_1.db.define("Log", {
         type: sequelize_1.DataTypes.STRING,
         allowNull: true,
     },
-});
+}, { tableName: "log" });
 exports.Log = Log;
 Log.belongsTo(administrador_1.Administrador, { foreignKey: "administrador_id" });

@@ -35,5 +35,5 @@ const Estado_Activo = config_1.db.define("Estado_Activo", {
     when_modified: {
         type: sequelize_1.DataTypes.DATE,
     },
-});
+}, { tableName: "estado_activo" });
 exports.Estado_Activo = Estado_Activo;

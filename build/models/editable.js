@@ -1,29 +1,24 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Valor_Residual = void 0;
+exports.Editable = void 0;
 const sequelize_1 = require("sequelize");
 const config_1 = require("../config");
-const Valor_Residual = config_1.db.define("Valor_Residual", {
+const Editable = config_1.db.define("Editable", {
     id: {
         type: sequelize_1.DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
     },
-    plazo: {
-        type: sequelize_1.DataTypes.INTEGER,
-        allowNull: false,
-        unique: {
-            name: 'unique error',
-            msg: "El plazo ya existe",
-        },
+    campo: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false
     },
-    minimo: {
+    valor: {
         type: sequelize_1.DataTypes.INTEGER,
         allowNull: false,
     },
-    maximo: {
-        type: sequelize_1.DataTypes.INTEGER,
-        allowNull: false,
+    tipo: {
+        type: sequelize_1.DataTypes.STRING,
     },
     deleted: {
         type: sequelize_1.DataTypes.BOOLEAN,
@@ -48,5 +43,5 @@ const Valor_Residual = config_1.db.define("Valor_Residual", {
     when_modified: {
         type: sequelize_1.DataTypes.DATE,
     },
-}, { tableName: "valor_residual" });
-exports.Valor_Residual = Valor_Residual;
+}, { tableName: "editable" });
+exports.Editable = Editable;

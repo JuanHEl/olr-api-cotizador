@@ -47,6 +47,6 @@ const Valor_Residual = db.define<Model<IValorResidual, any>, IValorResidual>("Va
   when_modified: {
     type: DataTypes.DATE,
   },
-});
+}, {tableName: "valor_residual"});
 
 export { Valor_Residual };

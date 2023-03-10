@@ -50,6 +50,6 @@ const Valor_Otros_Gastos = db.define<Model<IValorOtrosGastos, any>, IValorOtrosG
   when_modified: {
     type: DataTypes.DATE,
   },
-});
+}, {tableName: "valor_otros_gastos"});
 
 export { Valor_Otros_Gastos };

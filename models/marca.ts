@@ -34,6 +34,6 @@ const Marca = db.define<Model<IMarca, any>, IMarca>("Marca", {
   when_modified: {
     type: DataTypes.DATE,
   },
-});
+}, {tableName: "marca"});
 
 export { Marca };

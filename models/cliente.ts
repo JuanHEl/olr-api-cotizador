@@ -26,6 +26,6 @@ const Cliente = db.define("Cliente", {
   tipo_cliente: {
     type: DataTypes.STRING,
   },
-});
+}, {tableName: "cliente"});
 
 export { Cliente };

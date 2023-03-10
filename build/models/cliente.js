@@ -28,5 +28,5 @@ const Cliente = config_1.db.define("Cliente", {
     tipo_cliente: {
         type: sequelize_1.DataTypes.STRING,
     },
-});
+}, { tableName: "cliente" });
 exports.Cliente = Cliente;

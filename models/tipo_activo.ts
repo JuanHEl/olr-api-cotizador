@@ -34,6 +34,6 @@ const Tipo_Activo = db.define<Model<ITipoActivo, any>, ITipoActivo>("Tipo_Activo
   when_modified: {
     type: DataTypes.DATE,
   },
-});
+}, {tableName: "tipo_activo"});
 
 export { Tipo_Activo };

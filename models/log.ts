@@ -33,7 +33,7 @@ const Log = db.define("Log", {
     type: DataTypes.STRING,
     allowNull: true,
   },
-});
+}, {tableName: "log"});
 Log.belongsTo(Administrador, { foreignKey: "administrador_id" });
 
 export { Log };

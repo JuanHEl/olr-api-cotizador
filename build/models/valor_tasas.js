@@ -55,5 +55,5 @@ const Valor_Tasas = config_1.db.define("Valor_Tasas", {
     when_modified: {
         type: sequelize_1.DataTypes.DATE,
     },
-});
+}, { tableName: "valor_tasas" });
 exports.Valor_Tasas = Valor_Tasas;

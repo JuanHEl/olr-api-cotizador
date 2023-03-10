@@ -1,20 +1,28 @@
 import { DataTypes, Model } from 'sequelize';
 import { db } from "../config";
-import { IEstadoActivo } from '../interfaces/estadoActivoInterfaces';
+import { IEditable } from '../interfaces/editableInterface';
 
-const Estado_Activo = db.define<Model<IEstadoActivo, any>, IEstadoActivo>("Estado_Activo", {
+const Editable = db.define<Model<IEditable, any>, IEditable>("Editable", {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
   },
-  estado_activo: {
+  campo: {
     type: DataTypes.STRING,
+    allowNull: false
+  },
+  valor: {
+    type: DataTypes.INTEGER,
     allowNull: false,
+  },
+  tipo: {
+    type: DataTypes.STRING,
   },
   deleted: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
+    defaultValue: false,
   },
   who_deleted: {
     type: DataTypes.STRING,
@@ -34,6 +42,6 @@ const Estado_Activo = db.define<Model<IEstadoActivo, any>, IEstadoActivo>("Estad
   when_modified: {
     type: DataTypes.DATE,
   },
-}, {tableName: "estado_activo"});
+}, {tableName: "editable"});
 
-export { Estado_Activo };
+export { Editable };
