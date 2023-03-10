@@ -8,12 +8,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.doCotizacion = void 0;
-const valor_residual_1 = __importDefault(require("../models/valor_residual"));
+const valor_residual_1 = require("../models/valor_residual");
 const doCotizacion = (cot) => __awaiter(void 0, void 0, void 0, function* () {
     const resultados = {
         valorResidualSinIva: 0,
@@ -24,7 +21,7 @@ const doCotizacion = (cot) => __awaiter(void 0, void 0, void 0, function* () {
         comision: 0
     };
     try {
-        const valorResExiste = yield valor_residual_1.default.findAll();
+        const valorResExiste = yield valor_residual_1.Valor_Residual.findAll();
         console.log('Existe valor residual: ', valorResExiste.length);
         const { cliente, enAtenciónA, tipoCliente, promotor, correo, telefono, tipoActivo, cantidadUnidades, marca, modelo, version, estado, precioActivo, plazo, comisionApertura, anticipoArrendamiento, plan, tipoSeguro, costoSeguro, rentasDeposito, tipoResidual, fondoReserva, valorResidualConvenido, accesorio } = cot;
         const tablaResidual = [{

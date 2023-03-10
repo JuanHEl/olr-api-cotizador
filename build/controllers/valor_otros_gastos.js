@@ -8,17 +8,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.showValorOtrosGastos = exports.updateOtrosGastos = exports.registerValoresOtrosGastos = exports.getValoresOtrosGastos = void 0;
-const valor_otros_gastos_1 = __importDefault(require("../models/valor_otros_gastos"));
-const administrador_1 = __importDefault(require("../models/administrador"));
+const valor_otros_gastos_1 = require("../models/valor_otros_gastos");
+const administrador_1 = require("../models/administrador");
 const calculateTotalServices_1 = require("../services/calculateTotalServices");
 const getValoresOtrosGastos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const valoresOtrosGastos = yield valor_otros_gastos_1.default.findAll();
+        const valoresOtrosGastos = yield valor_otros_gastos_1.Valor_Otros_Gastos.findAll();
         return res.json({
             data: valoresOtrosGastos
         });
@@ -34,7 +31,7 @@ const registerValoresOtrosGastos = (req, res) => __awaiter(void 0, void 0, void 
     var _a;
     const { plazo, instalacion, gps_anual, gastos_notariales } = req.body;
     try {
-        const admin = yield administrador_1.default.findOne({
+        const admin = yield administrador_1.Administrador.findOne({
             where: {
                 id: (_a = req.authData) === null || _a === void 0 ? void 0 : _a.id
             }
@@ -44,13 +41,13 @@ const registerValoresOtrosGastos = (req, res) => __awaiter(void 0, void 0, void 
                 msg: 'No se pudo crear el valor, ocurrió un error con la identificación del usuario'
             });
         }
-        const saveValorTasas = yield valor_otros_gastos_1.default.create({
+        const saveValorTasas = yield valor_otros_gastos_1.Valor_Otros_Gastos.create({
             plazo,
             instalacion,
             gps_anual,
             gastos_notariales,
             total: (0, calculateTotalServices_1.calculateTotal)({ instalacion, gps_anual, gastos_notariales }),
-            who_created: admin.email,
+            who_created: admin.dataValues.email,
             when_created: new Date()
         });
         if (!saveValorTasas) {
@@ -73,7 +70,7 @@ const updateOtrosGastos = (req, res) => __awaiter(void 0, void 0, void 0, functi
     var _b;
     const { id, gastos_notariales, gps_anual, instalacion } = req.body;
     try {
-        const admin = yield administrador_1.default.findOne({
+        const admin = yield administrador_1.Administrador.findOne({
             where: {
                 id: (_b = req.authData) === null || _b === void 0 ? void 0 : _b.id
             }
@@ -83,23 +80,23 @@ const updateOtrosGastos = (req, res) => __awaiter(void 0, void 0, void 0, functi
                 msg: 'No se pudo crear el valor, ocurrió un error con la identificación del usuario'
             });
         }
-        const row = yield valor_otros_gastos_1.default.findOne({ where: { id } });
+        const row = yield valor_otros_gastos_1.Valor_Otros_Gastos.findOne({ where: { id } });
         if (!row) {
             return res.status(404).json({
                 msg: `No se encontró la fila con el id ${id}`,
             });
         }
-        const { instalacion: currentInstalacion, gps_anual: currentGPS, gastos_notariales: currentGastos } = row;
+        const { instalacion: currentInstalacion, gps_anual: currentGPS, gastos_notariales: currentGastos } = row.dataValues;
         const updatedInstalacion = instalacion !== undefined ? instalacion : currentInstalacion;
         const updatedGPS = gps_anual !== undefined ? gps_anual : currentGPS;
         const updatedGastos = gastos_notariales !== undefined ? gastos_notariales : currentGastos;
-        const total = (0, calculateTotalServices_1.calculateTotal)({ instalacion: parseFloat(updatedInstalacion), gps_anual: parseFloat(updatedGPS), gastos_notariales: parseFloat(updatedGastos) });
-        const updatedRow = yield valor_otros_gastos_1.default.update({
+        const total = (0, calculateTotalServices_1.calculateTotal)({ instalacion: updatedInstalacion, gps_anual: updatedGPS, gastos_notariales: updatedGastos });
+        const updatedRow = yield valor_otros_gastos_1.Valor_Otros_Gastos.update({
             gastos_notariales: updatedGastos,
             gps_anual: updatedGPS,
             instalacion: updatedInstalacion,
             total,
-            who_modified: admin.email,
+            who_modified: admin.dataValues.email,
             when_modified: new Date(),
         }, { where: { id } });
         if (updatedRow[0] === 0) {
@@ -120,7 +117,7 @@ const updateOtrosGastos = (req, res) => __awaiter(void 0, void 0, void 0, functi
 exports.updateOtrosGastos = updateOtrosGastos;
 const showValorOtrosGastos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const valoresOtrosGastos = yield valor_otros_gastos_1.default.findAll({
+        const valoresOtrosGastos = yield valor_otros_gastos_1.Valor_Otros_Gastos.findAll({
             where: { deleted: false },
             attributes: ['id', 'plazo', 'instalacion', 'gps_anual', 'gastos_notariales', 'total']
         });

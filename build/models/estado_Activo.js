@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Estado_Activo = void 0;
 const sequelize_1 = require("sequelize");
 const config_1 = require("../config");
 const Estado_Activo = config_1.db.define("Estado_Activo", {
@@ -35,4 +36,4 @@ const Estado_Activo = config_1.db.define("Estado_Activo", {
         type: sequelize_1.DataTypes.DATE,
     },
 });
-exports.default = Estado_Activo;
+exports.Estado_Activo = Estado_Activo;

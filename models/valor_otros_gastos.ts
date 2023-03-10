@@ -1,7 +1,8 @@
-import { DataTypes } from "sequelize";
+import { DataTypes, Model } from 'sequelize';
 import { db } from "../config";
+import { IValorOtrosGastos } from '../interfaces/valorOtrosGastosInterfaces';
 
-const Valor_Otros_Gastos = db.define("Valor_Otros_Gastos", {
+const Valor_Otros_Gastos = db.define<Model<IValorOtrosGastos, any>, IValorOtrosGastos>("Valor_Otros_Gastos", {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -51,4 +52,4 @@ const Valor_Otros_Gastos = db.define("Valor_Otros_Gastos", {
   },
 });
 
-export default Valor_Otros_Gastos;
+export { Valor_Otros_Gastos };

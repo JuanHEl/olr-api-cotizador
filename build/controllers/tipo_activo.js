@@ -8,16 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteTipoActivo = exports.showTipoActivo = exports.updateTipoActivo = exports.registerTipoActivo = exports.getTipoActivo = void 0;
-const administrador_1 = __importDefault(require("../models/administrador"));
-const tipo_activo_1 = __importDefault(require("../models/tipo_activo"));
+const administrador_1 = require("../models/administrador");
+const tipo_activo_1 = require("../models/tipo_activo");
 const getTipoActivo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const tipo_activo = yield tipo_activo_1.default.findAll();
+        const tipo_activo = yield tipo_activo_1.Tipo_Activo.findAll();
         return res.status(200).json({
             data: tipo_activo
         });
@@ -33,7 +30,7 @@ const registerTipoActivo = (req, res) => __awaiter(void 0, void 0, void 0, funct
     var _a;
     const { tipo_activo } = req.body;
     try {
-        const admin = yield administrador_1.default.findOne({
+        const admin = yield administrador_1.Administrador.findOne({
             where: {
                 id: (_a = req.authData) === null || _a === void 0 ? void 0 : _a.id
             }
@@ -43,9 +40,9 @@ const registerTipoActivo = (req, res) => __awaiter(void 0, void 0, void 0, funct
                 msg: 'No se pudo crear el valor, ocurrió un error con la identificación del usuario'
             });
         }
-        const saveTipoActivo = yield tipo_activo_1.default.create({
+        const saveTipoActivo = yield tipo_activo_1.Tipo_Activo.create({
             tipo_activo,
-            who_created: admin.email,
+            who_created: admin.dataValues.email,
             when_created: new Date(),
             deleted: false
         });
@@ -69,7 +66,7 @@ const updateTipoActivo = (req, res) => __awaiter(void 0, void 0, void 0, functio
     var _b;
     const { id, tipo_activo } = req.body;
     try {
-        const admin = yield administrador_1.default.findOne({
+        const admin = yield administrador_1.Administrador.findOne({
             where: {
                 id: (_b = req.authData) === null || _b === void 0 ? void 0 : _b.id
             }
@@ -79,9 +76,9 @@ const updateTipoActivo = (req, res) => __awaiter(void 0, void 0, void 0, functio
                 msg: 'No se pudo crear el valor, ocurrió un error con la identificación del usuario'
             });
         }
-        const updatedRow = yield tipo_activo_1.default.update({
+        const updatedRow = yield tipo_activo_1.Tipo_Activo.update({
             tipo_activo,
-            who_modified: admin.email,
+            who_modified: admin.dataValues.email,
             when_modified: new Date(),
         }, { where: { id } });
         if (updatedRow[0] === 0) {
@@ -102,7 +99,7 @@ const updateTipoActivo = (req, res) => __awaiter(void 0, void 0, void 0, functio
 exports.updateTipoActivo = updateTipoActivo;
 const showTipoActivo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const tipo_activo = yield tipo_activo_1.default.findAll({
+        const tipo_activo = yield tipo_activo_1.Tipo_Activo.findAll({
             where: { deleted: false },
             attributes: ['id', 'tipo_activo']
         });
@@ -121,7 +118,7 @@ const deleteTipoActivo = (req, res) => __awaiter(void 0, void 0, void 0, functio
     var _c;
     const { id_eliminar } = req.body;
     try {
-        const admin = yield administrador_1.default.findOne({
+        const admin = yield administrador_1.Administrador.findOne({
             where: {
                 id: (_c = req.authData) === null || _c === void 0 ? void 0 : _c.id
             }
@@ -131,7 +128,7 @@ const deleteTipoActivo = (req, res) => __awaiter(void 0, void 0, void 0, functio
                 msg: 'No se pudo crear el valor, ocurrió un error con la identificación del usuario'
             });
         }
-        const eliminado = yield tipo_activo_1.default.findOne({
+        const eliminado = yield tipo_activo_1.Tipo_Activo.findOne({
             where: {
                 id: id_eliminar
             }
@@ -143,7 +140,7 @@ const deleteTipoActivo = (req, res) => __awaiter(void 0, void 0, void 0, functio
         }
         yield eliminado.update({
             deleted: true,
-            who_deleted: admin.email,
+            who_deleted: admin.dataValues.email,
             when_deleted: new Date()
         });
         return res.status(201).json({

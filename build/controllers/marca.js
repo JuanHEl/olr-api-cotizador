@@ -8,16 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteMarca = exports.showMarca = exports.updateMarca = exports.registerMarca = exports.getMarca = void 0;
-const administrador_1 = __importDefault(require("../models/administrador"));
-const marca_1 = __importDefault(require("../models/marca"));
+const administrador_1 = require("../models/administrador");
+const marca_1 = require("../models/marca");
 const getMarca = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const marca = yield marca_1.default.findAll();
+        const marca = yield marca_1.Marca.findAll();
         return res.status(200).json({
             data: marca
         });
@@ -34,7 +31,7 @@ const registerMarca = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     var _a;
     const { marca } = req.body;
     try {
-        const admin = yield administrador_1.default.findOne({
+        const admin = yield administrador_1.Administrador.findOne({
             where: {
                 id: (_a = req.authData) === null || _a === void 0 ? void 0 : _a.id
             }
@@ -44,9 +41,9 @@ const registerMarca = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 msg: 'No se pudo crear el valor, ocurrió un error con la identificación del usuario'
             });
         }
-        const saveMarca = yield marca_1.default.create({
+        const saveMarca = yield marca_1.Marca.create({
             marca,
-            who_created: admin.email,
+            who_created: admin.dataValues.email,
             when_created: new Date(),
             deleted: false
         });
@@ -70,7 +67,7 @@ const updateMarca = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     var _b;
     const { id, marca } = req.body;
     try {
-        const admin = yield administrador_1.default.findOne({
+        const admin = yield administrador_1.Administrador.findOne({
             where: {
                 id: (_b = req.authData) === null || _b === void 0 ? void 0 : _b.id
             }
@@ -80,9 +77,9 @@ const updateMarca = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 msg: 'No se pudo crear el valor, ocurrió un error con la identificación del usuario'
             });
         }
-        const updatedRow = yield marca_1.default.update({
+        const updatedRow = yield marca_1.Marca.update({
             marca,
-            who_modified: admin.email,
+            who_modified: admin.dataValues.email,
             when_modified: new Date(),
         }, { where: { id } });
         if (updatedRow[0] === 0) {
@@ -103,7 +100,7 @@ const updateMarca = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.updateMarca = updateMarca;
 const showMarca = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const marca = yield marca_1.default.findAll({
+        const marca = yield marca_1.Marca.findAll({
             where: { deleted: false },
             attributes: ['id', 'marca']
         });
@@ -122,7 +119,7 @@ const deleteMarca = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     var _c;
     const { id_eliminar } = req.body;
     try {
-        const admin = yield administrador_1.default.findOne({
+        const admin = yield administrador_1.Administrador.findOne({
             where: {
                 id: (_c = req.authData) === null || _c === void 0 ? void 0 : _c.id
             }
@@ -132,7 +129,7 @@ const deleteMarca = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 msg: 'No se pudo crear el valor, ocurrió un error con la identificación del usuario'
             });
         }
-        const eliminado = yield marca_1.default.findOne({
+        const eliminado = yield marca_1.Marca.findOne({
             where: {
                 id: id_eliminar
             }
@@ -144,7 +141,7 @@ const deleteMarca = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         }
         yield eliminado.update({
             deleted: true,
-            who_deleted: admin.email,
+            who_deleted: admin.dataValues.email,
             when_deleted: new Date()
         });
         return res.status(201).json({

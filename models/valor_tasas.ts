@@ -1,7 +1,8 @@
-import { DataTypes } from "sequelize";
+import { DataTypes, Model } from 'sequelize';
 import { db } from "../config";
+import { IValorTasas } from '../interfaces/valorTasasInterfaces';
 
-const Valor_Tasas = db.define("Valor_Tasas", {
+const Valor_Tasas = db.define<Model<IValorTasas, any>, IValorTasas>("Valor_Tasas", {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -55,4 +56,4 @@ const Valor_Tasas = db.define("Valor_Tasas", {
   },
 });
 
-export default Valor_Tasas;
+export { Valor_Tasas };

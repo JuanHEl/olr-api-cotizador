@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Valor_Residual = void 0;
 const sequelize_1 = require("sequelize");
 const config_1 = require("../config");
 const Valor_Residual = config_1.db.define("Valor_Residual", {
@@ -48,4 +49,4 @@ const Valor_Residual = config_1.db.define("Valor_Residual", {
         type: sequelize_1.DataTypes.DATE,
     },
 });
-exports.default = Valor_Residual;
+exports.Valor_Residual = Valor_Residual;

@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
-import Valor_Otros_Gastos from "../models/valor_otros_gastos"
-import Administrador from '../models/administrador';
+import { Valor_Otros_Gastos } from "../models/valor_otros_gastos"
+import { Administrador } from '../models/administrador';
 import { IDTOValorOtrosGastos, IDTOValorOtrosGastosUpdate } from '../interfaces/valorOtrosGastosInterfaces';
 import { calculateTotal } from "../services/calculateTotalServices";
 
@@ -36,7 +36,7 @@ export const registerValoresOtrosGastos = async (req: Request<{}, {}, IDTOValorO
             gps_anual,
             gastos_notariales,
             total: calculateTotal({ instalacion, gps_anual, gastos_notariales }),
-            who_created: admin.email,
+            who_created: admin.dataValues.email,
             when_created: new Date()
         })
         if (!saveValorTasas) {
@@ -74,11 +74,11 @@ export const updateOtrosGastos = async (req: Request<{}, {}, IDTOValorOtrosGasto
             });
         }
 
-        const { instalacion: currentInstalacion, gps_anual: currentGPS, gastos_notariales: currentGastos } = row;
+        const { instalacion: currentInstalacion, gps_anual: currentGPS, gastos_notariales: currentGastos } = row.dataValues;
         const updatedInstalacion = instalacion !== undefined ? instalacion : currentInstalacion;
         const updatedGPS = gps_anual !== undefined ? gps_anual : currentGPS;
         const updatedGastos = gastos_notariales !== undefined ? gastos_notariales : currentGastos;
-        const total = calculateTotal({ instalacion: parseFloat(updatedInstalacion), gps_anual: parseFloat(updatedGPS), gastos_notariales: parseFloat(updatedGastos) });
+        const total = calculateTotal({ instalacion: updatedInstalacion, gps_anual: updatedGPS, gastos_notariales: updatedGastos });
 
         const updatedRow = await Valor_Otros_Gastos.update(
             {
@@ -86,7 +86,7 @@ export const updateOtrosGastos = async (req: Request<{}, {}, IDTOValorOtrosGasto
                 gps_anual: updatedGPS,
                 instalacion: updatedInstalacion,
                 total,
-                who_modified: admin.email,
+                who_modified: admin.dataValues.email,
                 when_modified: new Date(),
             },
             { where: { id } }

@@ -1,7 +1,8 @@
-import { DataTypes } from "sequelize";
+import { DataTypes, Model } from 'sequelize';
 import { db } from "../config";
+import { IMarca } from '../interfaces/marcaInterfaces';
 
-const Marca = db.define("Marca", {
+const Marca = db.define<Model<IMarca, any>, IMarca>("Marca", {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -35,4 +36,4 @@ const Marca = db.define("Marca", {
   },
 });
 
-export default Marca;
+export { Marca };

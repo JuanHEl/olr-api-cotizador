@@ -13,18 +13,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.loginCliente = exports.registerCliente = exports.getCliente = void 0;
-const cliente_1 = __importDefault(require("../models/cliente"));
+const cliente_1 = require("../models/cliente");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const getCliente = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const cliente = yield cliente_1.default.findAll();
+    const cliente = yield cliente_1.Cliente.findAll();
     res.json({ msg: 'Cliente', cliente });
 });
 exports.getCliente = getCliente;
 const registerCliente = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { nombre, email, password, telefono } = req.body;
     try {
-        const clienteExist = yield cliente_1.default.findOne({
+        const clienteExist = yield cliente_1.Cliente.findOne({
             where: {
                 email
             }
@@ -35,7 +35,7 @@ const registerCliente = (req, res) => __awaiter(void 0, void 0, void 0, function
             });
         }
         const hash = yield bcrypt_1.default.hash(password, 10);
-        const saveCliente = yield cliente_1.default.create({
+        const saveCliente = yield cliente_1.Cliente.create({
             nombre,
             email,
             telefono,
@@ -60,7 +60,7 @@ exports.registerCliente = registerCliente;
 const loginCliente = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
     try {
-        const cliente = yield cliente_1.default.findOne({
+        const cliente = yield cliente_1.Cliente.findOne({
             where: {
                 email
             }
@@ -70,18 +70,18 @@ const loginCliente = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 msg: 'No se encuentra registro del cliente'
             });
         }
-        const passwordValid = yield bcrypt_1.default.compare(password, cliente.password);
+        const passwordValid = yield bcrypt_1.default.compare(password, cliente.dataValues.password);
         if (!passwordValid) {
             return res.status(400).json({
                 msg: 'La contraseña es incorrecta'
             });
         }
-        const token = jsonwebtoken_1.default.sign({ id: cliente.id }, process.env.SECRET_JWT);
+        const token = jsonwebtoken_1.default.sign({ id: cliente.dataValues.id }, process.env.SECRET_JWT);
         res.status(201).json({
-            nombre: cliente.nombre,
-            email: cliente.email,
-            telefono: cliente.telefono,
-            tipo_cliente: cliente.tipo_cliente,
+            nombre: cliente.dataValues.nombre,
+            email: cliente.dataValues.email,
+            telefono: cliente.dataValues.telefono,
+            tipo_cliente: cliente.dataValues.tipo_cliente,
             token
         });
     }

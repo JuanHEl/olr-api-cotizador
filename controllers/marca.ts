@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
-import Administrador from '../models/administrador';
-import Marca from '../models/marca';
+import { Administrador } from '../models/administrador';
+import { Marca } from '../models/marca';
 
 
 export const getMarca = async (req: Request, res: Response) => {
@@ -32,7 +32,7 @@ export const registerMarca = async (req: Request<{}, {}, { marca: string }>, res
         }
         const saveMarca = await Marca.create({
             marca,
-            who_created: admin.email,
+            who_created: admin.dataValues.email,
             when_created: new Date(),
             deleted: false
         })
@@ -67,7 +67,7 @@ export const updateMarca = async (req: Request<{}, {}, { id: number, marca: stri
         const updatedRow = await Marca.update(
             {
                 marca,
-                who_modified: admin.email,
+                who_modified: admin.dataValues.email,
                 when_modified: new Date(),
             },
             { where: { id } }
@@ -104,7 +104,7 @@ export const showMarca = async (req: Request, res: Response) => {
     }
 }
 
-export const deleteMarca = async (req:Request<{},{},{id_eliminar:number }>,res:Response) => {
+export const deleteMarca = async (req: Request<{}, {}, { id_eliminar: number }>, res: Response) => {
     const { id_eliminar } = req.body;
     try {
         const admin = await Administrador.findOne({
@@ -118,22 +118,22 @@ export const deleteMarca = async (req:Request<{},{},{id_eliminar:number }>,res:R
             })
         }
         const eliminado = await Marca.findOne({
-            where:{
-                id:id_eliminar
+            where: {
+                id: id_eliminar
             }
         })
-        if(!eliminado){
+        if (!eliminado) {
             return res.status(404).json({
                 msg: 'No se pudo eliminar la marca'
             })
         }
         await eliminado.update({
-            deleted:true,
-            who_deleted:admin.email,
+            deleted: true,
+            who_deleted: admin.dataValues.email,
             when_deleted: new Date()
         })
         return res.status(201).json({
-            msg:'La marca se ha eliminado con éxito'
+            msg: 'La marca se ha eliminado con éxito'
         })
     } catch (error) {
         return res.status(500).json({

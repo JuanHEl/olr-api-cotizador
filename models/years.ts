@@ -1,14 +1,15 @@
-import { DataTypes } from "sequelize";
+import { DataTypes, Model } from 'sequelize';
 import { db } from "../config";
+import { IYears } from '../interfaces/yearsInterface';
 
-const Years = db.define("Years", {
+const Years = db.define<Model<IYears, any>, IYears>("Years", {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
   },
   year: {
-    type: DataTypes.STRING,
+    type: DataTypes.INTEGER,
     allowNull: false,
   },
   deleted: {
@@ -35,4 +36,4 @@ const Years = db.define("Years", {
   },
 });
 
-export default Years;
+export { Years };

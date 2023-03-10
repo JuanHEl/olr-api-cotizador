@@ -1,8 +1,8 @@
 import { Request, Response } from "express"
 import { Op } from 'sequelize'
 import { IDTOGetTasasByTipoActivo, IDTOValorTasas, IDTOValorTasasUpdate } from '../interfaces/valorTasasInterfaces';
-import Administrador from "../models/administrador";
-import Valor_Tasas from "../models/valor_tasas"
+import { Administrador } from "../models/administrador";
+import { Valor_Tasas } from "../models/valor_tasas"
 
 
 export const getValoresTasas = async (req: Request, res: Response) => {
@@ -72,7 +72,7 @@ export const registerValoresTasa = async (req: Request<{}, {}, IDTOValorTasas>, 
             tasa_alfa,
             tasa_beta,
             tasa_gamma,
-            who_created: admin.email,
+            who_created: admin.dataValues.email,
             when_created: new Date()
         })
         if (!saveValorTasas) {
@@ -139,7 +139,7 @@ export const updateTasas = async (req: Request<{}, {}, IDTOValorTasasUpdate>, re
         const updatedRow = await Valor_Tasas.update(
             {
                 tasa_a, tasa_b, tasa_alfa, tasa_beta, tasa_gamma,
-                who_modified: admin.email,
+                who_modified: admin.dataValues.email,
                 when_modified: new Date()
             },
             { where: { id } }

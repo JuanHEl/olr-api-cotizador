@@ -8,16 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.showValorValoresResiduales = exports.updateValoresResiduales = exports.registerValoresResiduales = exports.getValoresResiduales = void 0;
-const valor_residual_1 = __importDefault(require("../models/valor_residual"));
-const administrador_1 = __importDefault(require("../models/administrador"));
+const valor_residual_1 = require("../models/valor_residual");
+const administrador_1 = require("../models/administrador");
 const getValoresResiduales = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const valoresResiduales = yield valor_residual_1.default.findAll();
+        const valoresResiduales = yield valor_residual_1.Valor_Residual.findAll();
         return res.json({
             data: valoresResiduales
         });
@@ -33,7 +30,7 @@ const registerValoresResiduales = (req, res) => __awaiter(void 0, void 0, void 0
     var _a;
     const { plazo, maximo, minimo } = req.body;
     try {
-        const admin = yield administrador_1.default.findOne({
+        const admin = yield administrador_1.Administrador.findOne({
             where: {
                 id: (_a = req.authData) === null || _a === void 0 ? void 0 : _a.id
             }
@@ -43,11 +40,11 @@ const registerValoresResiduales = (req, res) => __awaiter(void 0, void 0, void 0
                 msg: 'No se pudo crear el valor, ocurrió un error con la identificación del usuario'
             });
         }
-        const saveValorResidual = yield valor_residual_1.default.create({
+        const saveValorResidual = yield valor_residual_1.Valor_Residual.create({
             plazo,
             minimo,
             maximo,
-            who_created: admin.id,
+            who_created: admin.dataValues.id,
             when_created: new Date(),
             deleted: false
         });
@@ -71,7 +68,7 @@ const updateValoresResiduales = (req, res) => __awaiter(void 0, void 0, void 0, 
     var _b;
     const { id, plazo, minimo, maximo } = req.body;
     try {
-        const admin = yield administrador_1.default.findOne({
+        const admin = yield administrador_1.Administrador.findOne({
             where: {
                 id: (_b = req.authData) === null || _b === void 0 ? void 0 : _b.id
             }
@@ -81,9 +78,9 @@ const updateValoresResiduales = (req, res) => __awaiter(void 0, void 0, void 0, 
                 msg: 'No se pudo crear el valor, ocurrió un error con la identificación del usuario'
             });
         }
-        const updatedRow = yield valor_residual_1.default.update({
+        const updatedRow = yield valor_residual_1.Valor_Residual.update({
             plazo, minimo, maximo,
-            who_modified: admin.email,
+            who_modified: admin.dataValues.email,
             when_modified: new Date(),
         }, { where: { id } });
         if (updatedRow[0] === 0) {
@@ -104,7 +101,7 @@ const updateValoresResiduales = (req, res) => __awaiter(void 0, void 0, void 0, 
 exports.updateValoresResiduales = updateValoresResiduales;
 const showValorValoresResiduales = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const valoresResiduales = yield valor_residual_1.default.findAll({
+        const valoresResiduales = yield valor_residual_1.Valor_Residual.findAll({
             where: { deleted: false },
             attributes: ['id', 'plazo', 'minimo', 'maximo']
         });

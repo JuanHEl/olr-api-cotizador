@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Valor_Tasas = void 0;
 const sequelize_1 = require("sequelize");
 const config_1 = require("../config");
 const Valor_Tasas = config_1.db.define("Valor_Tasas", {
@@ -55,4 +56,4 @@ const Valor_Tasas = config_1.db.define("Valor_Tasas", {
         type: sequelize_1.DataTypes.DATE,
     },
 });
-exports.default = Valor_Tasas;
+exports.Valor_Tasas = Valor_Tasas;

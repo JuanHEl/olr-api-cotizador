@@ -1,11 +1,9 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Log = void 0;
 const sequelize_1 = require("sequelize");
 const config_1 = require("../config");
-const administrador_1 = __importDefault(require("./administrador"));
+const administrador_1 = require("./administrador");
 const Log = config_1.db.define("Log", {
     id: {
         type: sequelize_1.DataTypes.INTEGER,
@@ -16,7 +14,7 @@ const Log = config_1.db.define("Log", {
         type: sequelize_1.DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
         references: {
-            model: administrador_1.default,
+            model: administrador_1.Administrador,
             key: "id",
         },
     },
@@ -38,5 +36,5 @@ const Log = config_1.db.define("Log", {
         allowNull: true,
     },
 });
-Log.belongsTo(administrador_1.default, { foreignKey: "administrador_id" });
-exports.default = Log;
+exports.Log = Log;
+Log.belongsTo(administrador_1.Administrador, { foreignKey: "administrador_id" });

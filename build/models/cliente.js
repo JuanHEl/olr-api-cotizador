@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Cliente = void 0;
 const sequelize_1 = require("sequelize");
 const config_1 = require("../config");
 const Cliente = config_1.db.define("Cliente", {
@@ -28,4 +29,4 @@ const Cliente = config_1.db.define("Cliente", {
         type: sequelize_1.DataTypes.STRING,
     },
 });
-exports.default = Cliente;
+exports.Cliente = Cliente;

@@ -1,7 +1,8 @@
-import { DataTypes } from "sequelize";
+import { DataTypes, Model } from 'sequelize';
 import { db } from "../config";
+import { IValorResidual } from '../interfaces/valorResidualInterfaces';
 
-const Valor_Residual = db.define("Valor_Residual", {
+const Valor_Residual = db.define<Model<IValorResidual, any>, IValorResidual>("Valor_Residual", {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -15,7 +16,7 @@ const Valor_Residual = db.define("Valor_Residual", {
       msg: "El plazo ya existe",
     },
   },
-  minimo: {             
+  minimo: {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
@@ -48,4 +49,4 @@ const Valor_Residual = db.define("Valor_Residual", {
   },
 });
 
-export default Valor_Residual;
+export { Valor_Residual };

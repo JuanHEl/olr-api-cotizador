@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Years = void 0;
 const sequelize_1 = require("sequelize");
 const config_1 = require("../config");
 const Years = config_1.db.define("Years", {
@@ -9,7 +10,7 @@ const Years = config_1.db.define("Years", {
         primaryKey: true,
     },
     year: {
-        type: sequelize_1.DataTypes.STRING,
+        type: sequelize_1.DataTypes.INTEGER,
         allowNull: false,
     },
     deleted: {
@@ -35,4 +36,4 @@ const Years = config_1.db.define("Years", {
         type: sequelize_1.DataTypes.DATE,
     },
 });
-exports.default = Years;
+exports.Years = Years;

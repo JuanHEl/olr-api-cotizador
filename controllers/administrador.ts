@@ -2,7 +2,7 @@ import { Request, Response } from "express"
 import { IDTOAdministrador, IDTOUpdatePassword, IDTOReplacePassword } from '../interfaces/administradorInterfaces';
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import Administrador from '../models/administrador';
+import { Administrador } from '../models/administrador';
 
 
 export const getAdmin = async (req: Request, res: Response) => {
@@ -58,18 +58,17 @@ export const loginAdmin = async (req: Request<{}, {}, { email: string, password:
                 msg: 'No se encuentra registro del administrador'
             })
         }
-        const passwordValid = await bcrypt.compare(password, admin.password)
+        const passwordValid = await bcrypt.compare(password, admin.dataValues.password)
         if (!passwordValid) {
             return res.status(400).json({
                 msg: 'La contraseña es incorrecta'
             })
         }
-        const token = jwt.sign({ id: admin.id }, process.env.SECRET_JWT as string)
+        const token = jwt.sign({ id: admin.dataValues.id }, process.env.SECRET_JWT as string)
         return res.json({
-            nombre: admin.nombre,
-            email: admin.email,
-            telefono: admin.telefono,
-            tipo_administrador: admin.tipo_administrador,
+            nombre: admin.dataValues.nombre,
+            email: admin.dataValues.email,
+            tipo_administrador: admin.dataValues.tipo_administrador,
             token
         })
 
@@ -102,6 +101,11 @@ export const updateAdmin = async (req: Request<{}, {}, IDTOAdministrador>, res: 
                     id
                 }
             })
+            if(!adminEdit){
+                return res.status(404).json({
+                    msg: 'No se encuentra el administrador a editar'
+                })
+            }
             await adminEdit.update({
                 nombre,
                 tipo_administrador,
@@ -136,22 +140,22 @@ export const updateAdminPass = async (req: Request<{}, {}, IDTOUpdatePassword>, 
                 id: req.authData?.id
             }
         })
-        // Verifica que sea un usuario activo
-        if (adminExist.deleted === true) {
-            return res.status(400).json({ error: 'Este usuario ha sido eliminado' })
-        }
-        // Verifica que los tipos de datos sean correctos
-        if (typeof password !== 'string' || typeof newPassword !== 'string') {
-            return res.status(400).json({ error: 'Los tipos de datos son incorrectos' })
-        }
         // Verifica que se haya encontrado el administrador
         if (!adminExist) {
             return res.status(404).json({
                 msg: 'No se encuentra el administrador'
             })
         }
+        // Verifica que sea un usuario activo
+        if (adminExist.dataValues.deleted === true) {
+            return res.status(400).json({ error: 'Este usuario ha sido eliminado' })
+        }
+        // Verifica que los tipos de datos sean correctos
+        if (typeof password !== 'string' || typeof newPassword !== 'string') {
+            return res.status(400).json({ error: 'Los tipos de datos son incorrectos' })
+        }
         // Verifica que la contraseña actual del usuario sea válida
-        const validPassword = await bcrypt.compare(password, adminExist.password)
+        const validPassword = await bcrypt.compare(password, adminExist.dataValues.password)
         if (!validPassword) {
             return res.status(401).json({ error: 'La contraseña actual es incorrecta' })
         }
@@ -199,7 +203,7 @@ export const deleteOtherAdmin = async (req: Request<{}, {}, { id_eliminar: numbe
         }
         await eliminado.update({
             deleted: true,
-            who_deleted: admin.email,
+            who_deleted: admin.dataValues.email,
             when_deleted: new Date()
         })
         return res.status(201).json({

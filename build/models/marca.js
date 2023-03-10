@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Marca = void 0;
 const sequelize_1 = require("sequelize");
 const config_1 = require("../config");
 const Marca = config_1.db.define("Marca", {
@@ -35,4 +36,4 @@ const Marca = config_1.db.define("Marca", {
         type: sequelize_1.DataTypes.DATE,
     },
 });
-exports.default = Marca;
+exports.Marca = Marca;

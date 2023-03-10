@@ -1,5 +1,5 @@
 import { IDTOCotizacion } from "../interfaces/cotizacionInterfaces"
-import Valor_Residual from '../models/valor_residual';
+import { Valor_Residual } from '../models/valor_residual';
 
 export const doCotizacion = async (cot: IDTOCotizacion) => {
 
@@ -146,7 +146,7 @@ export const doCotizacion = async (cot: IDTOCotizacion) => {
             gamma: 36
         }]
 
-        console.log('Aquí están todos los datos:', cot,'******************************************************************************************')
+        console.log('Aquí están todos los datos:', cot, '******************************************************************************************')
         // No existe un error como tal, es de typescript por el tipado
         // console.log('Accesorio:', accesorio.length)
         const sumaa = accesorio.reduce((sum: number, acc: { valorAccesorio: number }) => (sum + acc.valorAccesorio), 0)

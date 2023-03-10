@@ -28,4 +28,4 @@ const Cliente = db.define("Cliente", {
   },
 });
 
-export default Cliente;
+export { Cliente };

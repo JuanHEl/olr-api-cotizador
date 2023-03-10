@@ -1,7 +1,8 @@
-import { DataTypes } from "sequelize";
+import { DataTypes, Model } from 'sequelize';
 import { db } from "../config";
+import { IEstadoActivo } from '../interfaces/estadoActivoInterfaces';
 
-const Estado_Activo = db.define("Estado_Activo", {
+const Estado_Activo = db.define<Model<IEstadoActivo, any>, IEstadoActivo>("Estado_Activo", {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -35,4 +36,4 @@ const Estado_Activo = db.define("Estado_Activo", {
   },
 });
 
-export default Estado_Activo;
+export { Estado_Activo };

@@ -1,7 +1,8 @@
-import { DataTypes } from "sequelize";
+import { DataTypes, Model } from "sequelize";
 import { db } from "../config";
+import { IAdministrador } from "../interfaces/administradorInterfaces";
 
-const Administrador = db.define("Administrador", {
+const Administrador = db.define<Model<IAdministrador, any>, IAdministrador>("Administrador", {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -34,6 +35,12 @@ const Administrador = db.define("Administrador", {
   when_deleted: {
     type: DataTypes.DATE,
   },
+  who_modified: {
+    type: DataTypes.STRING,
+  },
+  when_modified: {
+    type: DataTypes.DATE,
+  }
 });
 
-export default Administrador;
+export {Administrador};

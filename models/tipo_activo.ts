@@ -1,7 +1,8 @@
-import { DataTypes } from "sequelize";
+import { DataTypes, Model } from "sequelize";
 import { db } from "../config";
+import { ITipoActivo } from '../interfaces/tipoActivoInterfaces';
 
-const Tipo_Activo = db.define("Tipo_Activo", {
+const Tipo_Activo = db.define<Model<ITipoActivo, any>, ITipoActivo>("Tipo_Activo", {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -35,4 +36,4 @@ const Tipo_Activo = db.define("Tipo_Activo", {
   },
 });
 
-export default Tipo_Activo;
+export { Tipo_Activo };

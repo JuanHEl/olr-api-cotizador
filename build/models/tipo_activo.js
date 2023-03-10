@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Tipo_Activo = void 0;
 const sequelize_1 = require("sequelize");
 const config_1 = require("../config");
 const Tipo_Activo = config_1.db.define("Tipo_Activo", {
@@ -35,4 +36,4 @@ const Tipo_Activo = config_1.db.define("Tipo_Activo", {
         type: sequelize_1.DataTypes.DATE,
     },
 });
-exports.default = Tipo_Activo;
+exports.Tipo_Activo = Tipo_Activo;

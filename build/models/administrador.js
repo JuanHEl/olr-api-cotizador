@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Administrador = void 0;
 const sequelize_1 = require("sequelize");
 const config_1 = require("../config");
 const Administrador = config_1.db.define("Administrador", {
@@ -35,5 +36,11 @@ const Administrador = config_1.db.define("Administrador", {
     when_deleted: {
         type: sequelize_1.DataTypes.DATE,
     },
+    who_modified: {
+        type: sequelize_1.DataTypes.STRING,
+    },
+    when_modified: {
+        type: sequelize_1.DataTypes.DATE,
+    }
 });
-exports.default = Administrador;
+exports.Administrador = Administrador;

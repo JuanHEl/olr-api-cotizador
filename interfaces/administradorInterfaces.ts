@@ -16,3 +16,16 @@ export interface IDTOReplacePassword {
     id_editPassword: number,
     newPassword: string
 }
+
+export interface IAdministrador {
+    id: number;
+    nombre: string;
+    email: string;
+    password: string;
+    tipo_administrador: string;
+    deleted: boolean;
+    who_deleted: string | null;
+    when_deleted: Date | null;
+    who_modified: string | null;
+    when_modified: Date | null;
+}

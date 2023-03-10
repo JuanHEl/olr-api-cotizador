@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
 import { db } from "../config";
-import Administrador from "./administrador";
+import { Administrador } from "./administrador";
 
 const Log = db.define("Log", {
   id: {
@@ -36,4 +36,4 @@ const Log = db.define("Log", {
 });
 Log.belongsTo(Administrador, { foreignKey: "administrador_id" });
 
-export default Log;
+export { Log };

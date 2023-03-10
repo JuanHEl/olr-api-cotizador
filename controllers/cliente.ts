@@ -1,42 +1,42 @@
 import { Request, Response } from "express"
 import { IDTOCliente } from "../interfaces/clienteInterfaces"
-import Cliente from "../models/cliente"
+import { Cliente } from "../models/cliente"
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
-export const getCliente = async( req: Request, res: Response ) => {
+export const getCliente = async (req: Request, res: Response) => {
     const cliente = await Cliente.findAll()
-    res.json({msg:'Cliente',cliente})
+    res.json({ msg: 'Cliente', cliente })
 }
 
-export const registerCliente = async( req:Request<{},{},IDTOCliente>, res: Response ) => {
-    const { nombre,email,password,telefono } = req.body
+export const registerCliente = async (req: Request<{}, {}, IDTOCliente>, res: Response) => {
+    const { nombre, email, password, telefono } = req.body
     try {
         const clienteExist = await Cliente.findOne({
-            where:{
+            where: {
                 email
             }
-        }) 
-        if( clienteExist ){
+        })
+        if (clienteExist) {
             return res.status(404).json({
-                msg: 'Ya existe un usuario con el email: ' + email 
+                msg: 'Ya existe un usuario con el email: ' + email
             })
         }
-        const hash = await bcrypt.hash(password,10)
+        const hash = await bcrypt.hash(password, 10)
         const saveCliente = await Cliente.create({
             nombre,
             email,
             telefono,
             password: hash
         })
-        if(!saveCliente){
+        if (!saveCliente) {
             return res.status(404).json({
-                msg: 'No se pudo crear el cliente: ' +nombre
+                msg: 'No se pudo crear el cliente: ' + nombre
             })
         }
-            return res.status(201).json({
-                msg: 'Cliente creado con éxito'
-            })
+        return res.status(201).json({
+            msg: 'Cliente creado con éxito'
+        })
     } catch (error) {
         res.status(500).json({
             error: error
@@ -44,38 +44,38 @@ export const registerCliente = async( req:Request<{},{},IDTOCliente>, res: Respo
     }
 }
 
-export const loginCliente = async( req:Request<{},{},{email:string, password:string}>, res: Response ) => {
+export const loginCliente = async (req: Request<{}, {}, { email: string, password: string }>, res: Response) => {
     const { email, password } = req.body
     try {
         const cliente = await Cliente.findOne({
-            where:{
+            where: {
                 email
             }
         })
-        if(!cliente){
+        if (!cliente) {
             return res.status(404).json({
-                msg:'No se encuentra registro del cliente'
+                msg: 'No se encuentra registro del cliente'
             })
         }
-        const passwordValid = await bcrypt.compare( password, cliente.password )
-        if(!passwordValid){
+        const passwordValid = await bcrypt.compare(password, cliente.dataValues.password)
+        if (!passwordValid) {
             return res.status(400).json({
-                msg:'La contraseña es incorrecta'
+                msg: 'La contraseña es incorrecta'
             })
         }
-        const token = jwt.sign( {id:cliente.id} , process.env.SECRET_JWT as string)
+        const token = jwt.sign({ id: cliente.dataValues.id }, process.env.SECRET_JWT as string)
         res.status(201).json({
-            nombre:cliente.nombre,
-            email:cliente.email,
-            telefono:cliente.telefono,
-            tipo_cliente:cliente.tipo_cliente,
+            nombre: cliente.dataValues.nombre,
+            email: cliente.dataValues.email,
+            telefono: cliente.dataValues.telefono,
+            tipo_cliente: cliente.dataValues.tipo_cliente,
             token
         })
-        
+
     } catch (error) {
         console.log(error)
         res.status(500).json({
-            msg:'Ocurrió un error en el servidor'
+            msg: 'Ocurrió un error en el servidor'
         })
     }
 }

@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
-import Valor_Residual from "../models/valor_residual"
+import { Valor_Residual } from "../models/valor_residual"
 import { IDTOValorResidual, IDTOValorResidualUpdate } from '../interfaces/valorResidualInterfaces';
-import Administrador from '../models/administrador';
+import { Administrador } from '../models/administrador';
 
 
 export const getValoresResiduales = async (req: Request, res: Response) => {
@@ -34,7 +34,7 @@ export const registerValoresResiduales = async (req: Request<{}, {}, IDTOValorRe
             plazo,
             minimo,
             maximo,
-            who_created: admin.id,
+            who_created: admin.dataValues.id,
             when_created: new Date(),
             deleted: false
         })
@@ -69,7 +69,7 @@ export const updateValoresResiduales = async (req: Request<{}, {}, IDTOValorResi
         const updatedRow = await Valor_Residual.update(
             {
                 plazo, minimo, maximo,
-                who_modified: admin.email,
+                who_modified: admin.dataValues.email,
                 when_modified: new Date(),
             },
             { where: { id } }

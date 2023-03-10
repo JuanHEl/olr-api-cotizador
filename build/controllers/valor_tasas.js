@@ -8,17 +8,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateTasas = exports.getTasasByTipoActivo = exports.registerValoresTasa = exports.getTasasByTipoActivoPaginate = exports.getValoresTasas = void 0;
 const sequelize_1 = require("sequelize");
-const administrador_1 = __importDefault(require("../models/administrador"));
-const valor_tasas_1 = __importDefault(require("../models/valor_tasas"));
+const administrador_1 = require("../models/administrador");
+const valor_tasas_1 = require("../models/valor_tasas");
 const getValoresTasas = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const valoresTasas = yield valor_tasas_1.default.findAll();
+        const valoresTasas = yield valor_tasas_1.Valor_Tasas.findAll();
         return res.json({
             data: valoresTasas
         });
@@ -36,7 +33,7 @@ const getTasasByTipoActivoPaginate = (req, res) => __awaiter(void 0, void 0, voi
         const page = parseInt(req.body.page) || 1; // obtener el número de página desde la consulta
         const limit = parseInt(req.body.limit) || 10; // obtener el límite de resultados desde la consulta
         const offset = (page - 1) * limit;
-        const { count, rows } = yield valor_tasas_1.default.findAndCountAll({
+        const { count, rows } = yield valor_tasas_1.Valor_Tasas.findAndCountAll({
             where: {
                 tipo_activo: {
                     [sequelize_1.Op.like]: `%${tipo_activo}%`,
@@ -64,7 +61,7 @@ const registerValoresTasa = (req, res) => __awaiter(void 0, void 0, void 0, func
     var _a;
     const { plazo, tipo_activo, tasa_a, tasa_b, tasa_alfa, tasa_beta, tasa_gamma } = req.body;
     try {
-        const admin = yield administrador_1.default.findOne({
+        const admin = yield administrador_1.Administrador.findOne({
             where: {
                 id: (_a = req.authData) === null || _a === void 0 ? void 0 : _a.id
             }
@@ -74,7 +71,7 @@ const registerValoresTasa = (req, res) => __awaiter(void 0, void 0, void 0, func
                 msg: 'No se pudo crear el valor, ocurrió un error con la identificación del usuario'
             });
         }
-        const saveValorTasas = yield valor_tasas_1.default.create({
+        const saveValorTasas = yield valor_tasas_1.Valor_Tasas.create({
             plazo,
             tipo_activo,
             tasa_a,
@@ -82,7 +79,7 @@ const registerValoresTasa = (req, res) => __awaiter(void 0, void 0, void 0, func
             tasa_alfa,
             tasa_beta,
             tasa_gamma,
-            who_created: admin.email,
+            who_created: admin.dataValues.email,
             when_created: new Date()
         });
         if (!saveValorTasas) {
@@ -105,7 +102,7 @@ const getTasasByTipoActivo = (req, res) => __awaiter(void 0, void 0, void 0, fun
     var _b;
     const { tipo_activo } = req.params;
     try {
-        const admin = yield administrador_1.default.findOne({
+        const admin = yield administrador_1.Administrador.findOne({
             where: {
                 id: (_b = req.authData) === null || _b === void 0 ? void 0 : _b.id
             }
@@ -115,7 +112,7 @@ const getTasasByTipoActivo = (req, res) => __awaiter(void 0, void 0, void 0, fun
                 msg: 'No se pudo crear el valor, ocurrió un error con la identificación del usuario'
             });
         }
-        const rows = yield valor_tasas_1.default.findAll({
+        const rows = yield valor_tasas_1.Valor_Tasas.findAll({
             where: {
                 tipo_activo: {
                     [sequelize_1.Op.like]: `%${tipo_activo}%`,
@@ -139,7 +136,7 @@ const updateTasas = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     var _c;
     const { id, tasa_a, tasa_b, tasa_alfa, tasa_beta, tasa_gamma } = req.body;
     try {
-        const admin = yield administrador_1.default.findOne({
+        const admin = yield administrador_1.Administrador.findOne({
             where: {
                 id: (_c = req.authData) === null || _c === void 0 ? void 0 : _c.id
             }
@@ -149,9 +146,9 @@ const updateTasas = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 msg: 'No se pudo crear el valor, ocurrió un error con la identificación del usuario'
             });
         }
-        const updatedRow = yield valor_tasas_1.default.update({
+        const updatedRow = yield valor_tasas_1.Valor_Tasas.update({
             tasa_a, tasa_b, tasa_alfa, tasa_beta, tasa_gamma,
-            who_modified: admin.email,
+            who_modified: admin.dataValues.email,
             when_modified: new Date()
         }, { where: { id } });
         if (updatedRow[0] === 0) {

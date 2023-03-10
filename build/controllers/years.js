@@ -8,16 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteYears = exports.showYears = exports.updateYears = exports.registerYears = exports.getYears = void 0;
-const administrador_1 = __importDefault(require("../models/administrador"));
-const years_1 = __importDefault(require("../models/years"));
+const administrador_1 = require("../models/administrador");
+const years_1 = require("../models/years");
 const getYears = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const years = yield years_1.default.findAll();
+        const years = yield years_1.Years.findAll();
         return res.status(200).json({
             data: years
         });
@@ -33,7 +30,7 @@ const registerYears = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     var _a;
     const { year } = req.body;
     try {
-        const admin = yield administrador_1.default.findOne({
+        const admin = yield administrador_1.Administrador.findOne({
             where: {
                 id: (_a = req.authData) === null || _a === void 0 ? void 0 : _a.id
             }
@@ -43,9 +40,9 @@ const registerYears = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 msg: 'No se pudo crear el valor, ocurrió un error con la identificación del usuario'
             });
         }
-        const saveYear = yield years_1.default.create({
+        const saveYear = yield years_1.Years.create({
             year,
-            who_created: admin.email,
+            who_created: admin.dataValues.email,
             when_created: new Date(),
             deleted: false
         });
@@ -69,7 +66,7 @@ const updateYears = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     var _b;
     const { id, year } = req.body;
     try {
-        const admin = yield administrador_1.default.findOne({
+        const admin = yield administrador_1.Administrador.findOne({
             where: {
                 id: (_b = req.authData) === null || _b === void 0 ? void 0 : _b.id
             }
@@ -79,9 +76,9 @@ const updateYears = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 msg: 'No se pudo crear el valor, ocurrió un error con la identificación del usuario'
             });
         }
-        const updatedRow = yield years_1.default.update({
+        const updatedRow = yield years_1.Years.update({
             year,
-            who_modified: admin.email,
+            who_modified: admin.dataValues.email,
             when_modified: new Date(),
         }, { where: { id } });
         if (updatedRow[0] === 0) {
@@ -102,7 +99,7 @@ const updateYears = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.updateYears = updateYears;
 const showYears = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const year = yield years_1.default.findAll({
+        const year = yield years_1.Years.findAll({
             where: { deleted: false },
             attributes: ['id', 'year']
         });
@@ -121,7 +118,7 @@ const deleteYears = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     var _c;
     const { id_eliminar } = req.body;
     try {
-        const admin = yield administrador_1.default.findOne({
+        const admin = yield administrador_1.Administrador.findOne({
             where: {
                 id: (_c = req.authData) === null || _c === void 0 ? void 0 : _c.id
             }
@@ -131,7 +128,7 @@ const deleteYears = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 msg: 'No se pudo crear el valor, ocurrió un error con la identificación del usuario'
             });
         }
-        const eliminado = yield years_1.default.findOne({
+        const eliminado = yield years_1.Years.findOne({
             where: {
                 id: id_eliminar
             }
@@ -143,7 +140,7 @@ const deleteYears = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         }
         yield eliminado.update({
             deleted: true,
-            who_deleted: admin.email,
+            who_deleted: admin.dataValues.email,
             when_deleted: new Date()
         });
         return res.status(201).json({

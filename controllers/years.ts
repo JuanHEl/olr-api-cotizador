@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
-import Administrador from '../models/administrador';
-import Years from '../models/years';
+import { Administrador } from '../models/administrador';
+import { Years } from '../models/years';
 
 
 export const getYears = async (req: Request, res: Response) => {
@@ -31,7 +31,7 @@ export const registerYears = async (req: Request<{}, {}, { year: number }>, res:
         }
         const saveYear = await Years.create({
             year,
-            who_created: admin.email,
+            who_created: admin.dataValues.email,
             when_created: new Date(),
             deleted: false
         })
@@ -66,7 +66,7 @@ export const updateYears = async (req: Request<{}, {}, { id: number, year: numbe
         const updatedRow = await Years.update(
             {
                 year,
-                who_modified: admin.email,
+                who_modified: admin.dataValues.email,
                 when_modified: new Date(),
             },
             { where: { id } }
@@ -118,7 +118,7 @@ export const deleteYears = async (req: Request<{}, {}, { id_eliminar: number }>,
         }
         const eliminado = await Years.findOne({
             where: {
-                id:id_eliminar
+                id: id_eliminar
             }
         })
         if (!eliminado) {
@@ -128,7 +128,7 @@ export const deleteYears = async (req: Request<{}, {}, { id_eliminar: number }>,
         }
         await eliminado.update({
             deleted: true,
-            who_deleted: admin.email,
+            who_deleted: admin.dataValues.email,
             when_deleted: new Date()
         })
         return res.status(201).json({

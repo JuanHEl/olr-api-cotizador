@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
-import Administrador from '../models/administrador';
-import Estado_Activo from '../models/estado_activo';
+import { Administrador } from '../models/administrador';
+import { Estado_Activo } from '../models/estado_activo';
 
 
 export const getEstadoActivo = async (req: Request, res: Response) => {
@@ -32,7 +32,7 @@ export const registerEstadoActivo = async (req: Request<{}, {}, { estado_activo:
         }
         const saveEstadoActivo = await Estado_Activo.create({
             estado_activo,
-            who_created: admin.email,
+            who_created: admin.dataValues.email,
             when_created: new Date(),
             deleted: false
         })
@@ -67,7 +67,7 @@ export const updateEstadoActivo = async (req: Request<{}, {}, { id: number, esta
         const updatedRow = await Estado_Activo.update(
             {
                 estado_activo,
-                who_modified: admin.email,
+                who_modified: admin.dataValues.email,
                 when_modified: new Date(),
             },
             { where: { id } }
@@ -104,7 +104,7 @@ export const showEstadoActivo = async (req: Request, res: Response) => {
     }
 }
 
-export const deleteEstadoActivo = async (req:Request<{},{},{id_eliminar:number }>,res:Response) => {
+export const deleteEstadoActivo = async (req: Request<{}, {}, { id_eliminar: number }>, res: Response) => {
     const { id_eliminar } = req.body;
     try {
         const admin = await Administrador.findOne({
@@ -118,22 +118,22 @@ export const deleteEstadoActivo = async (req:Request<{},{},{id_eliminar:number }
             })
         }
         const eliminado = await Estado_Activo.findOne({
-            where:{
-                id:id_eliminar
+            where: {
+                id: id_eliminar
             }
         })
-        if(!eliminado){
+        if (!eliminado) {
             return res.status(404).json({
                 msg: 'No se pudo eliminar el estado del activo'
             })
         }
         await eliminado.update({
-            deleted:true,
-            who_deleted:admin.email,
+            deleted: true,
+            who_deleted: admin.dataValues.email,
             when_deleted: new Date()
         })
         return res.status(201).json({
-            msg:'El estado del activo eliminado con éxito'
+            msg: 'El estado del activo eliminado con éxito'
         })
     } catch (error) {
         return res.status(500).json({
