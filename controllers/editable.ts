@@ -55,7 +55,7 @@ export const getEditable = async (req: Request, res: Response) => {
             attributes: ['campo', 'valor', 'tipo']
         })
         return res.status(200).json({
-            edit
+            data:edit
         });
     } catch (error) {
         return res.status(500).json({

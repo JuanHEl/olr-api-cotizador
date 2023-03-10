@@ -67,7 +67,7 @@ const getEditable = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             attributes: ['campo', 'valor', 'tipo']
         });
         return res.status(200).json({
-            edit
+            data: edit
         });
     }
     catch (error) {
