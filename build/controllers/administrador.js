@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.replacePassword = exports.getAdminSession = exports.showAdmin = exports.deleteOtherAdmin = exports.updateAdminPass = exports.updateAdmin = exports.loginAdmin = exports.registerAdministrador = exports.getAdmin = void 0;
+exports.testCreateAdmins = exports.replacePassword = exports.getAdminSession = exports.showAdmin = exports.deleteOtherAdmin = exports.updateAdminPass = exports.updateAdmin = exports.loginAdmin = exports.registerAdministrador = exports.getAdmin = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const administrador_1 = require("../models/administrador");
@@ -309,3 +309,46 @@ const replacePassword = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.replacePassword = replacePassword;
+const testCreateAdmins = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const hash = yield bcrypt_1.default.hash('123456789', 10);
+        const saveAdmin = yield administrador_1.Administrador.create({
+            nombre: 'Juan',
+            email: 'juan@gmail.com',
+            tipo_administrador: 'Administrador',
+            password: hash
+        });
+        const saveAdmin1 = yield administrador_1.Administrador.create({
+            nombre: 'Daniel',
+            email: 'daniel@gmail.com',
+            tipo_administrador: 'Promotor',
+            password: hash
+        });
+        const saveAdmin2 = yield administrador_1.Administrador.create({
+            nombre: 'Leo',
+            email: 'leo@gmail.com',
+            tipo_administrador: 'Validador',
+            password: hash
+        });
+        const saveAdmin3 = yield administrador_1.Administrador.create({
+            nombre: 'Brian',
+            email: 'brian@gmail.com',
+            tipo_administrador: 'Cliente',
+            password: hash
+        });
+        if (!saveAdmin || !saveAdmin1 || !saveAdmin2 || !saveAdmin3) {
+            return res.status(404).json({
+                msg: 'No se pudo crear el administrador: '
+            });
+        }
+        return res.status(201).json({
+            msg: 'Administrador creado con éxito'
+        });
+    }
+    catch (error) {
+        res.status(500).json({
+            error: error
+        });
+    }
+});
+exports.testCreateAdmins = testCreateAdmins;

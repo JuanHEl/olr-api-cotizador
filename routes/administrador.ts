@@ -9,12 +9,14 @@ import {
   showAdmin,
   getAdminSession,
   replacePassword,
+  testCreateAdmins
 } from "../controllers/administrador";
 import { validarJWT } from "../middlewares/validarJWT";
 
 const administradorRouter = Router();
 
 administradorRouter.post("/login", loginAdmin);
+administradorRouter.post("/test", testCreateAdmins);
 administradorRouter.use(validarJWT);
 administradorRouter.post("/", registerAdministrador);
 administradorRouter.get("/", getAdmin);

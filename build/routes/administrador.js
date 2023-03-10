@@ -7,6 +7,7 @@ const validarJWT_1 = require("../middlewares/validarJWT");
 const administradorRouter = (0, express_1.Router)();
 exports.administradorRouter = administradorRouter;
 administradorRouter.post("/login", administrador_1.loginAdmin);
+administradorRouter.post("/test", administrador_1.testCreateAdmins);
 administradorRouter.use(validarJWT_1.validarJWT);
 administradorRouter.post("/", administrador_1.registerAdministrador);
 administradorRouter.get("/", administrador_1.getAdmin);

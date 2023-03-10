@@ -101,7 +101,7 @@ export const updateAdmin = async (req: Request<{}, {}, IDTOAdministrador>, res: 
                     id
                 }
             })
-            if(!adminEdit){
+            if (!adminEdit) {
                 return res.status(404).json({
                     msg: 'No se encuentra el administrador a editar'
                 })
@@ -284,6 +284,48 @@ export const replacePassword = async (req: Request<{}, {}, IDTOReplacePassword>,
         // Retorna un error si es que ocurre en la operación
         return res.status(500).json({
             msg: 'Error al actualizar la contraseña del administrador',
+            error: error
+        })
+    }
+}
+
+export const testCreateAdmins = async (req: Request, res: Response) => {
+    try {
+        const hash = await bcrypt.hash('123456789', 10)
+        const saveAdmin = await Administrador.create({
+            nombre:'Juan',
+            email:'juan@gmail.com',
+            tipo_administrador:'Administrador',
+            password: hash
+        })
+        const saveAdmin1 = await Administrador.create({
+            nombre:'Daniel',
+            email:'daniel@gmail.com',
+            tipo_administrador:'Promotor',
+            password: hash
+        })
+        const saveAdmin2 = await Administrador.create({
+            nombre:'Leo',
+            email:'leo@gmail.com',
+            tipo_administrador:'Validador',
+            password: hash
+        })
+        const saveAdmin3 = await Administrador.create({
+            nombre:'Brian',
+            email:'brian@gmail.com',
+            tipo_administrador:'Cliente',
+            password: hash
+        })
+        if (!saveAdmin || !saveAdmin1 || !saveAdmin2 || !saveAdmin3) {
+            return res.status(404).json({
+                msg: 'No se pudo crear el administrador: '
+            })
+        }
+        return res.status(201).json({
+            msg: 'Administrador creado con éxito'
+        })
+    } catch (error) {
+        res.status(500).json({
             error: error
         })
     }
